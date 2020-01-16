@@ -46,6 +46,5 @@ class InsertionSorter extends BubbleSorter {
 
     finish() {
         this.array[this.first + 1] = this.temporary;
-        console.log(this.first, this.array[this.first + 1], this.temporary)
     }
 }

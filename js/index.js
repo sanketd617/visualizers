@@ -1,11 +1,12 @@
-let bubbleSorter = new InsertionSorter();
+let array = [1, 2, 3, 4, 5, 1, 2, 3, 4, 5];
+// let bubbleSorter = new InsertionSorter();
 
-bubbleSorter.sort([6, 17, 8, 23, 11]);
+// bubbleSorter.sort(array);
 
 let selectionSorter = new InsertionSorter();
 
-selectionSorter.sort([6, 17, 8, 23, 11]);
-
-let insertionSorter = new InsertionSorter();
-
-insertionSorter.sort([6, 17, 8, 23, 11]);
+selectionSorter.sort(array);
+//
+// let insertionSorter = new InsertionSorter();
+//
+// insertionSorter.sort(array);
