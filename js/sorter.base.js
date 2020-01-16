@@ -11,6 +11,7 @@ class Sorter {
         this.first = -1;
         this.second = -1;
         this.minimum = -1;
+        this.temporary = -1;
         this.needToSwap = false;
     }
 
@@ -22,15 +23,21 @@ class Sorter {
             // console.log(this.first, this.second);
             this.compare();
             if (this.needToSwap) {
-                console.log("swapping", this.first, this.minimum !== -1 ? this.minimum : this.second)
-                let t = this.array[this.first];
-                this.array[this.first] = this.array[this.minimum !== -1 ? this.minimum : this.second];
-                this.array[this.minimum !== -1 ? this.minimum : this.second] = t;
-                this.minimum = -1;
+                this.swap();
             }
-            console.log(this.array);
             this.selectNext();
+            // console.log(this.array);
         }
+
+        this.finish();
+        console.log(this.array);
+    }
+
+    swap() {
+        let t = this.array[this.first];
+        this.array[this.first] = this.array[this.minimum !== -1 ? this.minimum : this.second];
+        this.array[this.minimum !== -1 ? this.minimum : this.second] = t;
+        this.minimum = -1;
     }
 
     selectInitial() {
@@ -46,6 +53,10 @@ class Sorter {
     }
 
     compare() {
+
+    }
+
+    finish() {
 
     }
 

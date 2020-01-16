@@ -1,4 +1,11 @@
+let bubbleSorter = new InsertionSorter();
 
-let sorter = new SelectionSorter();
+bubbleSorter.sort([6, 17, 8, 23, 11]);
 
-sorter.sort([6, 17, 11, 8, 23]);
+let selectionSorter = new InsertionSorter();
+
+selectionSorter.sort([6, 17, 8, 23, 11]);
+
+let insertionSorter = new InsertionSorter();
+
+insertionSorter.sort([6, 17, 8, 23, 11]);
