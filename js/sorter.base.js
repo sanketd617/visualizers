@@ -1,10 +1,18 @@
 class Sorter {
-    static type = {
+    static typeMap = {
         merge: 1,
         bubble: 2,
         selection: 3,
         insertion: 4,
         quick: 5
+    };
+
+    static nameMap = {
+        merge: "Merge Sort",
+        bubble: "Bubble Sort",
+        selection: "Selection Sort",
+        insertion: "Insertion Sort",
+        quick: "Quick Sort"
     };
 
     static moveType = {

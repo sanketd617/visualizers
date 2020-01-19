@@ -57,19 +57,19 @@ class Visualizer {
 
     static visualize(moves, viewMap, type, slider) {
         switch (type) {
-            case Sorter.type.bubble:
+            case Sorter.typeMap.bubble:
                 BubbleVisualizer.visualize(moves, viewMap, slider);
                 break;
-            case Sorter.type.insertion:
+            case Sorter.typeMap.insertion:
                 InsertionVisualizer.visualize(moves, viewMap, slider);
                 break;
-            case Sorter.type.selection:
+            case Sorter.typeMap.selection:
                 SelectionVisualizer.visualize(moves, viewMap, slider);
                 break;
-            case Sorter.type.merge:
+            case Sorter.typeMap.merge:
                 MergeVisualizer.visualize(moves, viewMap, slider);
                 break;
-            case Sorter.type.quick:
+            case Sorter.typeMap.quick:
                 QuickVisualizer.visualize(moves, viewMap, slider);
                 break;
         }

@@ -5,30 +5,30 @@ class Controller {
     static viewMap;
     static type;
     static moves;
+    static container;
+    static algorithmSelector;
+    static slider;
     static startVisualization() {
-        let container = document.getElementById("container");
-        let algorithmSelector = document.getElementById("algorithmSelector");
 
         Controller.array = [15, 8, 11, 17, 13, 5, 6, 4, 10];
 
-        Controller.maxWidth = parseInt(window.getComputedStyle(container, null).getPropertyValue("width"));
-        Controller.maxHeight = parseInt(window.getComputedStyle(container, null).getPropertyValue("height"));
+        Controller.maxWidth = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("width"));
+        Controller.maxHeight = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("height"));
         Controller.viewMap = Visualizer.createViews(Controller.array, Controller.maxWidth, Controller.maxHeight);
 
         for(let child of document.querySelectorAll(".elem")) {
-            container.removeChild(child);
+            Controller.container.removeChild(child);
         }
 
-        Visualizer.layoutViews(container, Controller.viewMap, Controller.array.length);
-        Controller.type = parseInt(algorithmSelector.value);
-        Controller.moves = Sorter.sort(Controller.array, Controller.type);
+        Visualizer.layoutViews(Controller.container, Controller.viewMap, Controller.array.length);
         Controller.setSpeed();
+        Controller.type = parseInt(Controller.algorithmSelector.value);
+        Controller.moves = Sorter.sort(Controller.array, Controller.type);
         Visualizer.visualize(Controller.moves, Controller.viewMap, Controller.type);
     }
 
     static setSpeed() {
-        let slider = document.getElementById('slider');
-        let speed = (parseFloat(slider.min) + parseFloat(slider.max) - parseFloat(slider.value)) * 1000;
+        let speed = (parseFloat(Controller.slider.min) + parseFloat(Controller.slider.max) - parseFloat(Controller.slider.value)) * 1000;
         Visualizer.setSpeed(speed);
         for (let i = 0; i < Controller.array.length; i++) {
             Controller.viewMap[i].style.transitionDuration = speed/1000 + 's';
@@ -38,6 +38,23 @@ class Controller {
     static onSliderChange() {
         Controller.setSpeed();
     }
+
+    static init() {
+        Controller.container = document.getElementById("container");
+        Controller.algorithmSelector = document.getElementById("algorithmSelector");
+        Controller.slider = document.getElementById('slider');
+
+        for(let key of Object.keys(Sorter.typeMap)) {
+            let name = Sorter.nameMap[key];
+            let type = Sorter.typeMap[key];
+            let option = document.createElement("option");
+            option.value = type;
+            option.innerHTML = name;
+
+            Controller.algorithmSelector.appendChild(option);
+        }
+    }
 }
 
+Controller.init();
 
