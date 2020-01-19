@@ -14,7 +14,8 @@ class Sorter {
         insert: 4,
         temporary: 5,
         select: 6,
-        minimum: 7
+        minimum: 7,
+        pivot: 8
     };
 
     static maxElements = 15;
@@ -58,7 +59,7 @@ class Sorter {
     }
 
     static layoutViews(id, viewMap, total) {
-        for(let i = 0; i < total; i++) {
+        for (let i = 0; i < total; i++) {
             document.getElementById(id).appendChild(viewMap[i]);
         }
     }
@@ -93,14 +94,13 @@ class Sorter {
             for (let i = 1; i < array.length; i++) {
                 let t = array[i];
                 let j = i - 1;
+                let flag = false;
                 moves.push({
-                    first: t,
-                    second: -1,
+                    first: i,
                     type: Sorter.moveType.temporary
                 });
                 moves.push({
                     first: j,
-                    second: -1,
                     type: Sorter.moveType.select
                 });
                 for (; j >= 0; j--) {
@@ -108,20 +108,28 @@ class Sorter {
                         j++;
                         break;
                     }
+                    flag = true;
                     moves.push({
                         first: j,
-                        second: -1,
                         type: Sorter.moveType.shift
                     });
                     array[j + 1] = array[j];
+                    if(j === 0) {
+                        break;
+                    }
                 }
-                if (j >= 0) {
+                if (flag) {
                     moves.push({
                         first: j,
-                        second: t,
                         type: Sorter.moveType.insert
                     });
                     array[j] = t;
+                }
+                else {
+                    moves.push({
+                        first: i,
+                        type: Sorter.moveType.insert
+                    });
                 }
             }
             return moves;
@@ -158,17 +166,42 @@ class Sorter {
         }
 
         function partition(array, left, right) {
-            let pivot = array[Math.floor((right + left) / 2)];
+            let pivotIndex = Math.floor(left + (right - left) / 2);
+            let pivot = array[pivotIndex];
+            moves.push({
+                first: pivotIndex,
+                type: Sorter.moveType.pivot
+            });
             let i = left;
             let j = right;
+            moves.push({
+                first: i,
+                second: j,
+                type: Sorter.moveType.next
+            });
             while (i <= j) {
                 while (array[i] < pivot) {
+                    moves.push({
+                        first: i,
+                        second: j,
+                        type: Sorter.moveType.next
+                    });
                     i++;
                 }
                 while (array[j] > pivot) {
+                    moves.push({
+                        first: i,
+                        second: j,
+                        type: Sorter.moveType.next
+                    });
                     j--;
                 }
                 if (i <= j) {
+                    moves.push({
+                        first: i,
+                        second: j,
+                        type: Sorter.moveType.swap
+                    });
                     let t = array[j];
                     array[j] = array[i];
                     array[i] = t;
@@ -183,13 +216,13 @@ class Sorter {
             if (array.length > 1) {
                 let index = partition(array, left, right);
                 if (left < index - 1) {
-                    Sorter.quick(array, left, index - 1)
+                    quick(array, left, index - 1)
                 }
                 if (index < right) {
-                    Sorter.quick(array, index, right)
+                    quick(array, index, right)
                 }
             }
-            return array;
+            return moves;
         }
 
         function merge(leftArray, rightArray) {
@@ -231,7 +264,7 @@ class Sorter {
             case 4:
                 return insertion(arrayCopy);
             case 5:
-                return quick(arrayCopy);
+                return quick(arrayCopy, 0, arrayCopy.length - 1);
         }
     }
 }
