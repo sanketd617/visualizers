@@ -1,4 +1,12 @@
 class Visualizer {
+    static setSpeed(speed) {
+        BubbleVisualizer.speed = speed;
+        InsertionVisualizer.speed = speed;
+        SelectionVisualizer.speed = speed;
+        MergeVisualizer.speed = speed;
+        QuickVisualizer.speed = speed;
+    }
+
     static createViews(array, maxWidth, maxHeight) {
         let total = array.length;
         let maxSize = 50;
@@ -43,22 +51,22 @@ class Visualizer {
         }
     }
 
-    static visualize(moves, viewMap, type) {
+    static visualize(moves, viewMap, type, slider) {
         switch (type) {
             case Sorter.type.bubble:
-                BubbleVisualizer.visualize(moves, viewMap);
+                BubbleVisualizer.visualize(moves, viewMap, slider);
                 break;
             case Sorter.type.insertion:
-                InsertionVisualizer.visualize(moves, viewMap);
+                InsertionVisualizer.visualize(moves, viewMap, slider);
                 break;
             case Sorter.type.selection:
-                SelectionVisualizer.visualize(moves, viewMap);
+                SelectionVisualizer.visualize(moves, viewMap, slider);
                 break;
             case Sorter.type.merge:
-                MergeVisualizer.visualize(moves, viewMap);
+                MergeVisualizer.visualize(moves, viewMap, slider);
                 break;
             case Sorter.type.quick:
-                QuickVisualizer.visualize(moves, viewMap);
+                QuickVisualizer.visualize(moves, viewMap, slider);
                 break;
         }
     }

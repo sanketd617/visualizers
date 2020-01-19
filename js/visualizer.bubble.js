@@ -1,4 +1,5 @@
 class BubbleVisualizer {
+    static speed;
     static visualize(moves, viewMap) {
         let index = 0;
         let first = -1;
@@ -44,7 +45,7 @@ class BubbleVisualizer {
             index++;
 
             if (index < moves.length) {
-                setTimeout(animateInternally, document.getElementById("slider").value * 1000);
+                setTimeout(animateInternally, BubbleVisualizer.speed);
             } else {
                 viewMap[first].classList.remove('active');
                 viewMap[first].classList.remove('moving');
