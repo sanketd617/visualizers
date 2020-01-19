@@ -6,11 +6,11 @@
 </head>
 <body>
 
-<div id="sorter">
+<div id="container">
     <div class="controls">
-        Speed &nbsp; <input id="slider" type="range" min="0.1" max="2" value="0.5" step="0.001" onchange="onSliderChange()">
+        Speed &nbsp; <input id="slider" type="range" min="0.1" max="2" value="0.5" step="0.001" onchange="Controller.onSliderChange()">
 
-        <select name="algo" id="algoSelector">
+        <select name="algorithm" id="algorithmSelector">
             <option value="1">Merge Sort</option>
             <option value="2" selected>Bubble Sort</option>
             <option value="3">Selection Sort</option>
@@ -18,7 +18,7 @@
             <option value="5">Quick Sort</option>
         </select>
 
-        <button onclick="startVisualization()">START</button>
+        <button onclick="Controller.startVisualization()">START</button>
     </div>
 </div>
 
@@ -36,7 +36,7 @@
         height: 100vh;
     }
 
-    #sorter {
+    #container {
         width: 90vw;
         height: 50vh;
         border: 5px solid grey;
@@ -97,6 +97,12 @@
 <script src="js/sorter.quick.js"></script>
 <script src="js/sorter.merge.js"></script>
 <script src="js/sorter.base.js"></script>
+<script src="js/visualizer.bubble.js"></script>
+<script src="js/visualizer.selection.js"></script>
+<script src="js/visualizer.insertion.js"></script>
+<script src="js/visualizer.quick.js"></script>
+<script src="js/visualizer.merge.js"></script>
+<script src="js/visualizer.base.js"></script>
 <script src="js/index.js"></script>
 </body>
 </html>
