@@ -22,7 +22,11 @@ class Visualizer {
 
         function create(number, index) {
             let left = parseInt(startLeft + index * (spacing + size));
-            let top = maxHeight - 0.2 * maxHeight - 0.6 * maxHeight * array[index] / maxValue;
+            // let top = maxHeight - 0.2 * maxHeight - 0.6 * maxHeight * array[index] / (maxValue);
+            let A = 0.2 * maxHeight;
+            let B = 0.8 * maxHeight - size;
+            let R = (B - A) / (maxValue - minValue);
+            let top = (maxValue - array[index]) * R + A;
             let height = 0.8 * maxHeight - top;
             let view = document.createElement("div");
             view.classList.add('elem');
