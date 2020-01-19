@@ -15,10 +15,8 @@ class Controller {
         Controller.maxHeight = parseInt(window.getComputedStyle(container, null).getPropertyValue("height"));
         Controller.viewMap = Visualizer.createViews(Controller.array, Controller.maxWidth, Controller.maxHeight);
 
-        for (let i = 0; i < Controller.array.length; i++) {
-            if(container.contains(Controller.viewMap[i])) {
-                container.removeChild(Controller.viewMap[i]);
-            }
+        for(let child of document.querySelectorAll(".elem")) {
+            container.removeChild(child);
         }
 
         Visualizer.layoutViews(container, Controller.viewMap, Controller.array.length);
