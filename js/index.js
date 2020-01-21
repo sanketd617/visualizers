@@ -8,31 +8,40 @@ class Controller {
     static algorithmSelector;
     static slider;
     static speed;
-    static array = [15, 8, 11, 17, 13, 5, 6, 4, 10];
+    static numberOfItems = 10;
+    static array = [];
+    static rangeStart = 0;
+    static rangeEnd = 20;
 
     static startVisualization() {
         document.getElementById("start-btn").disabled = true;
         document.getElementById("shuffle-btn").disabled = true;
-
-        for (let child of document.querySelectorAll(".elem")) {
-            Controller.container.removeChild(child);
-        }
+        document.getElementById("random-btn").disabled = true;
+        Controller.algorithmSelector.disabled = true;
 
         Controller.type = parseInt(Controller.algorithmSelector.value);
-
-        Controller.maxWidth = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("width"));
-        Controller.maxHeight = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("height"));
 
         let sortResult = Sorter.sort(Controller.array, Controller.type);
         Controller.moves = sortResult.moves;
 
-        Controller.viewMap = Visualizer.createViews(Controller.array, Controller.maxWidth, Controller.maxHeight);
-        Controller.setSpeed();
-        Visualizer.layoutViews(Controller.container, Controller.viewMap, Controller.array.length);
-
         Visualizer.visualize(Controller.array, Controller.moves, Controller.viewMap, Controller.type, Controller.slider, Controller.onVisualizationEnd);
 
         Controller.array = sortResult.array;
+    }
+
+    static randomize(toBeCreated) {
+        Controller.array = [];
+        for(let i = 0; i < Controller.numberOfItems; i++) {
+            Controller.array.push(Math.floor(Math.random() * (Controller.rangeEnd - Controller.rangeStart)) + Controller.rangeStart);
+        }
+
+        if(toBeCreated) {
+            Controller.viewMap = Visualizer.createViews(Controller.array, Controller.maxWidth, Controller.maxHeight);
+            Visualizer.layoutViews(Controller.container, Controller.viewMap, Controller.array.length);
+        } else {
+            Visualizer.resizeViewsTo(Controller.viewMap, Controller.array, Controller.maxHeight);
+        }
+        Controller.setSpeed();
     }
 
     static shuffle() {
@@ -67,6 +76,14 @@ class Controller {
     static onVisualizationEnd() {
         document.getElementById("start-btn").disabled = false;
         document.getElementById("shuffle-btn").disabled = false;
+        document.getElementById("random-btn").disabled = false;
+        Controller.algorithmSelector.disabled = false;
+    }
+
+    static removeViews() {
+        for (let child of document.querySelectorAll(".elem")) {
+            Controller.container.removeChild(child);
+        }
     }
 
     static init() {
@@ -83,6 +100,17 @@ class Controller {
 
             Controller.algorithmSelector.appendChild(option);
         }
+
+        setTimeout(() => {
+            Controller.type = parseInt(Controller.algorithmSelector.value);
+
+            Controller.maxWidth = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("width"));
+            Controller.maxHeight = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("height"));
+
+
+            Controller.randomize(true);
+
+        }, 100);
     }
 }
 

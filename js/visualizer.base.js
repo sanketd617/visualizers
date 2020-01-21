@@ -1,4 +1,9 @@
 class Visualizer {
+    static maxSize = 50;
+    static minSize = 30;
+    static maxSpacing = 50;
+    static minSpacing = 30;
+
     static setSpeed(speed) {
         BubbleVisualizer.speed = speed;
         InsertionVisualizer.speed = speed;
@@ -9,23 +14,18 @@ class Visualizer {
 
     static createViews(array, maxWidth, maxHeight) {
         let total = array.length;
-        let maxSize = 50;
-        let minSize = 30;
-        let maxSpacing = 50;
-        let minSpacing = 30;
-        let spacing = minSpacing + (maxSpacing - minSpacing) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
-        let size = minSize + (maxSize - minSize) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
+        let spacing = Visualizer.minSpacing + (Visualizer.maxSpacing - Visualizer.minSpacing) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
+        let size = Visualizer.minSize + (Visualizer.maxSize - Visualizer.minSize) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
         let startLeft = (maxWidth - size * total - spacing * (total - 1)) / 2;
 
         let minValue = Math.min.apply(Math, array);
         let maxValue = Math.max.apply(Math, array);
+        let A = 0.2 * maxHeight;
+        let B = 0.8 * maxHeight - size;
+        let R = (B - A) / (maxValue - minValue);
 
         function create(number, index) {
             let left = parseInt(startLeft + index * (spacing + size));
-            // let top = maxHeight - 0.2 * maxHeight - 0.6 * maxHeight * array[index] / (maxValue);
-            let A = 0.2 * maxHeight;
-            let B = 0.8 * maxHeight - size;
-            let R = (B - A) / (maxValue - minValue);
             let top = (maxValue - array[index]) * R + A;
             let height = 0.8 * maxHeight - top;
             let view = document.createElement("div");
@@ -47,6 +47,23 @@ class Visualizer {
         }
 
         return viewMap;
+    }
+
+    static resizeViewsTo(viewMap, array, maxHeight) {
+        let minValue = Math.min.apply(Math, array);
+        let maxValue = Math.max.apply(Math, array);
+        let size = Visualizer.minSize + (Visualizer.maxSize - Visualizer.minSize) * Math.cos((array.length / Sorter.maxElements) * Math.PI / 2);
+        let A = 0.2 * maxHeight;
+        let B = 0.8 * maxHeight - size;
+        let R = (B - A) / (maxValue - minValue);
+
+        for(let i = 0; i < array.length; i++) {
+            let top = (maxValue - array[i]) * R + A;
+            let height = 0.8 * maxHeight - top;
+            viewMap[i].style.height = height + 'px';
+            viewMap[i].style.top = top + 'px';
+            viewMap[i].innerHTML = array[i];
+        }
     }
 
     static layoutViews(container, viewMap, total) {
