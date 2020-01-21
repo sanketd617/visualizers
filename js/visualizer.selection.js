@@ -1,6 +1,6 @@
 class SelectionVisualizer {
     static speed;
-    static visualize(moves, viewMap, slider, onEnd) {
+    static visualize(array, moves, viewMap, slider, onEnd) {
         let index = 0;
         let first = -1;
         let second = -1;
@@ -46,6 +46,10 @@ class SelectionVisualizer {
                     viewMap[first] = viewMap[second];
                     viewMap[second] = t;
 
+                    setTimeout(() => {
+                        viewMap[first].classList.remove('minimum');
+                    }, SelectionVisualizer.speed);
+
                     break;
                 case Sorter.moveType.minimum:
                     if (minIndex !== -1) {
@@ -66,12 +70,11 @@ class SelectionVisualizer {
                 setTimeout(animateInternally, SelectionVisualizer.speed);
             } else {
                 onEnd();
-                viewMap[first].classList.remove('active');
-                viewMap[first].classList.remove('moving');
-                viewMap[second].classList.remove('active');
-                viewMap[second].classList.remove('moving');
-                viewMap[second].classList.add('minimum');
-                viewMap[array.length - 1].classList.add('minimum');
+                for(let index of Object.keys(viewMap)) {
+                    viewMap[index].classList.remove('active');
+                    viewMap[index].classList.remove('moving');
+                    viewMap[index].classList.remove('minimum');
+                }
             }
         }
 

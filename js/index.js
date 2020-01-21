@@ -30,16 +30,12 @@ class Controller {
         Controller.setSpeed();
         Visualizer.layoutViews(Controller.container, Controller.viewMap, Controller.array.length);
 
-        Visualizer.visualize(Controller.moves, Controller.viewMap, Controller.type, Controller.slider, Controller.onVisualizationEnd);
+        Visualizer.visualize(Controller.array, Controller.moves, Controller.viewMap, Controller.type, Controller.slider, Controller.onVisualizationEnd);
 
         Controller.array = sortResult.array;
     }
 
     static shuffle() {
-
-        let funcQueue = [];
-        console.log("before before", Controller.array);
-
         for (let i = 0; i < Controller.array.length; i++) {
             let randomIndex = Math.floor(Math.random() * Controller.array.length);
             let t = Controller.array[i];
@@ -54,16 +50,6 @@ class Controller {
             Controller.viewMap[i] = Controller.viewMap[randomIndex];
             Controller.viewMap[randomIndex] = t;
         }
-
-        // console.log("before", Controller.array);
-        //
-        // setTimeout(function () {
-        //     funcQueue.forEach(function (fn) {
-        //        fn();
-        //     });
-        //     console.log("after", Controller.array)
-        // }, Controller.speed);
-
     }
 
     static setSpeed() {
