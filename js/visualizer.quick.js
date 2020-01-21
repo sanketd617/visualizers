@@ -1,6 +1,6 @@
 class QuickVisualizer {
     static speed;
-    static visualize(moves, viewMap) {
+    static visualize(moves, viewMap, slider, onEnd) {
         let index = 0;
         let first = -1;
         let second = -1;
@@ -69,6 +69,7 @@ class QuickVisualizer {
             if (index < moves.length) {
                 setTimeout(animateInternally, QuickVisualizer.speed);
             } else {
+                onEnd();
                 viewMap[first].classList.remove('active');
                 viewMap[first].classList.remove('moving');
                 viewMap[pivot].classList.remove('pivot');

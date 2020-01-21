@@ -22,6 +22,9 @@ class BubbleSorter {
                 }
             }
         }
-        return BubbleSorter.moves;
+        return {
+            moves: BubbleSorter.moves,
+            array: array
+        };
     }
 }

@@ -29,6 +29,9 @@ class SelectionSorter {
                 type: Sorter.moveType.swap
             });
         }
-        return SelectionSorter.moves;
+        return {
+            moves: SelectionSorter.moves,
+            array: array
+        };
     }
 }

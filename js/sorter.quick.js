@@ -49,19 +49,26 @@ class QuickSorter {
     }
 
 
-    static sort(array, left, right) {
+    static sortHelper(array, left, right) {
         if(left === 0 && right === array.length - 1) {
             QuickSorter.moves = [];
         }
         if (array.length > 1) {
             let index = QuickSorter.partition(array, left, right);
             if (left < index - 1) {
-                QuickSorter.sort(array, left, index - 1)
+                QuickSorter.sortHelper(array, left, index - 1)
             }
             if (index < right) {
-                QuickSorter.sort(array, index, right)
+                QuickSorter.sortHelper(array, index, right)
             }
         }
         return QuickSorter.moves;
+    }
+
+    static sort(array) {
+        return {
+            moves: QuickSorter.sortHelper(array, 0, array.length - 1),
+            array: array
+        };
     }
 }

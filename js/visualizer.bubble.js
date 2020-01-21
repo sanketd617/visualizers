@@ -1,6 +1,6 @@
 class BubbleVisualizer {
     static speed;
-    static visualize(moves, viewMap) {
+    static visualize(moves, viewMap, slider, onEnd) {
         let index = 0;
         let first = -1;
         let second = -1;
@@ -38,7 +38,6 @@ class BubbleVisualizer {
                     let t = viewMap[first];
                     viewMap[first] = viewMap[second];
                     viewMap[second] = t;
-
                     break;
             }
 
@@ -47,6 +46,7 @@ class BubbleVisualizer {
             if (index < moves.length) {
                 setTimeout(animateInternally, BubbleVisualizer.speed);
             } else {
+                onEnd();
                 viewMap[first].classList.remove('active');
                 viewMap[first].classList.remove('moving');
                 viewMap[second].classList.remove('active');

@@ -19,8 +19,8 @@ class MergeSorter {
         return sortedArr;
     }
 
-    static sort(array, flag) {
-        if(flag === undefined) {
+    static sortHelper(array, flag) {
+        if (flag === undefined) {
             MergeSorter.moves = [];
         }
         if (array.length < 2) {
@@ -29,6 +29,13 @@ class MergeSorter {
         let midpoint = parseInt(array.length / 2);
         let leftArray = array.slice(0, midpoint);
         let rightArray = array.slice(midpoint, array.length);
-        return MergeSorter.merge(MergeSorter.sort(leftArray, true), MergeSorter.sort(rightArray, true));
+        return MergeSorter.merge(MergeSorter.sortHelper(leftArray, true), MergeSorter.sortHelper(rightArray, true));
+    }
+
+    static sort() {
+        return {
+            moves: [],
+            array: []
+        };
     }
 }

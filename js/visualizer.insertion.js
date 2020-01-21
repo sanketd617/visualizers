@@ -1,6 +1,6 @@
 class InsertionVisualizer {
     static speed;
-    static visualize(moves, viewMap) {
+    static visualize(moves, viewMap, slider, onEnd) {
         let index = 0;
         let first = -1;
         let selected = null;
@@ -60,6 +60,7 @@ class InsertionVisualizer {
             if (index < moves.length) {
                 setTimeout(animateInternally, InsertionVisualizer.speed);
             } else {
+                onEnd();
                 viewMap[first].classList.remove('active');
                 viewMap[first].classList.remove('moving');
             }

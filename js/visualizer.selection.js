@@ -1,6 +1,6 @@
 class SelectionVisualizer {
     static speed;
-    static visualize(moves, viewMap) {
+    static visualize(moves, viewMap, slider, onEnd) {
         let index = 0;
         let first = -1;
         let second = -1;
@@ -31,7 +31,10 @@ class SelectionVisualizer {
                     second = move.second;
                     viewMap[first].classList.add('active');
                     viewMap[first].classList.add('moving');
-                    viewMap[minIndex].classList.add('moving');
+
+                    if(minIndex !== -1) {
+                        viewMap[minIndex].classList.add('moving');
+                    }
 
                     let fx = viewMap[first].style.left;
                     let sx = viewMap[second].style.left;
@@ -62,6 +65,7 @@ class SelectionVisualizer {
             if (index < moves.length) {
                 setTimeout(animateInternally, SelectionVisualizer.speed);
             } else {
+                onEnd();
                 viewMap[first].classList.remove('active');
                 viewMap[first].classList.remove('moving');
                 viewMap[second].classList.remove('active');

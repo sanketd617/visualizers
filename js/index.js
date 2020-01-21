@@ -1,5 +1,4 @@
 class Controller {
-    static array;
     static maxWidth;
     static maxHeight;
     static viewMap;
@@ -8,30 +7,70 @@ class Controller {
     static container;
     static algorithmSelector;
     static slider;
+    static speed;
+    static array = [15, 8, 11, 17, 13, 5, 6, 4, 10];
+
     static startVisualization() {
+        document.getElementById("start-btn").disabled = true;
+        document.getElementById("shuffle-btn").disabled = true;
 
-        Controller.array = [15, 8, 11, 17, 13, 5, 6, 4, 10];
-
-        Controller.maxWidth = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("width"));
-        Controller.maxHeight = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("height"));
-        Controller.viewMap = Visualizer.createViews(Controller.array, Controller.maxWidth, Controller.maxHeight);
-
-        for(let child of document.querySelectorAll(".elem")) {
+        for (let child of document.querySelectorAll(".elem")) {
             Controller.container.removeChild(child);
         }
 
-        Visualizer.layoutViews(Controller.container, Controller.viewMap, Controller.array.length);
-        Controller.setSpeed();
         Controller.type = parseInt(Controller.algorithmSelector.value);
-        Controller.moves = Sorter.sort(Controller.array, Controller.type);
-        Visualizer.visualize(Controller.moves, Controller.viewMap, Controller.type);
+
+        Controller.maxWidth = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("width"));
+        Controller.maxHeight = parseInt(window.getComputedStyle(Controller.container, null).getPropertyValue("height"));
+
+        let sortResult = Sorter.sort(Controller.array, Controller.type);
+        Controller.moves = sortResult.moves;
+
+        Controller.viewMap = Visualizer.createViews(Controller.array, Controller.maxWidth, Controller.maxHeight);
+        Controller.setSpeed();
+        Visualizer.layoutViews(Controller.container, Controller.viewMap, Controller.array.length);
+
+        Visualizer.visualize(Controller.moves, Controller.viewMap, Controller.type, Controller.slider, Controller.onVisualizationEnd);
+
+        Controller.array = sortResult.array;
+    }
+
+    static shuffle() {
+
+        let funcQueue = [];
+        console.log("before before", Controller.array);
+
+        for (let i = 0; i < Controller.array.length; i++) {
+            let randomIndex = Math.floor(Math.random() * Controller.array.length);
+            let t = Controller.array[i];
+            Controller.array[i] = Controller.array[randomIndex];
+            Controller.array[randomIndex] = t;
+
+            let tempLeft = Controller.viewMap[i].style.left;
+            Controller.viewMap[i].style.left = Controller.viewMap[randomIndex].style.left;
+            Controller.viewMap[randomIndex].style.left = tempLeft;
+
+            t = Controller.viewMap[i];
+            Controller.viewMap[i] = Controller.viewMap[randomIndex];
+            Controller.viewMap[randomIndex] = t;
+        }
+
+        // console.log("before", Controller.array);
+        //
+        // setTimeout(function () {
+        //     funcQueue.forEach(function (fn) {
+        //        fn();
+        //     });
+        //     console.log("after", Controller.array)
+        // }, Controller.speed);
+
     }
 
     static setSpeed() {
-        let speed = (parseFloat(Controller.slider.min) + parseFloat(Controller.slider.max) - parseFloat(Controller.slider.value)) * 1000;
-        Visualizer.setSpeed(speed);
+        Controller.speed = (parseFloat(Controller.slider.min) + parseFloat(Controller.slider.max) - parseFloat(Controller.slider.value)) * 1000;
+        Visualizer.setSpeed(Controller.speed);
         for (let i = 0; i < Controller.array.length; i++) {
-            Controller.viewMap[i].style.transitionDuration = speed/1000 + 's';
+            Controller.viewMap[i].style.transitionDuration = Controller.speed / 1000 + 's';
         }
     }
 
@@ -39,12 +78,17 @@ class Controller {
         Controller.setSpeed();
     }
 
+    static onVisualizationEnd() {
+        document.getElementById("start-btn").disabled = false;
+        document.getElementById("shuffle-btn").disabled = false;
+    }
+
     static init() {
         Controller.container = document.getElementById("container");
         Controller.algorithmSelector = document.getElementById("algorithmSelector");
         Controller.slider = document.getElementById('slider');
 
-        for(let key of Object.keys(Sorter.typeMap)) {
+        for (let key of Object.keys(Sorter.typeMap)) {
             let name = Sorter.nameMap[key];
             let type = Sorter.typeMap[key];
             let option = document.createElement("option");

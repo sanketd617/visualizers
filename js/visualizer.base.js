@@ -55,22 +55,22 @@ class Visualizer {
         }
     }
 
-    static visualize(moves, viewMap, type, slider) {
+    static visualize(moves, viewMap, type, slider, onEnd) {
         switch (type) {
             case Sorter.typeMap.bubble:
-                BubbleVisualizer.visualize(moves, viewMap, slider);
+                BubbleVisualizer.visualize(moves, viewMap, slider, onEnd);
                 break;
             case Sorter.typeMap.insertion:
-                InsertionVisualizer.visualize(moves, viewMap, slider);
+                InsertionVisualizer.visualize(moves, viewMap, slider, onEnd);
                 break;
             case Sorter.typeMap.selection:
-                SelectionVisualizer.visualize(moves, viewMap, slider);
+                SelectionVisualizer.visualize(moves, viewMap, slider, onEnd);
                 break;
             case Sorter.typeMap.merge:
-                MergeVisualizer.visualize(moves, viewMap, slider);
+                MergeVisualizer.visualize(moves, viewMap, slider, onEnd);
                 break;
             case Sorter.typeMap.quick:
-                QuickVisualizer.visualize(moves, viewMap, slider);
+                QuickVisualizer.visualize(moves, viewMap, slider, onEnd);
                 break;
         }
     }

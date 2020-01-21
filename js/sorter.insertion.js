@@ -44,6 +44,9 @@ class InsertionSorter {
                 });
             }
         }
-        return InsertionSorter.moves;
+        return {
+            moves: InsertionSorter.moves,
+            array: array
+        };
     }
 }
