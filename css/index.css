@@ -1,0 +1,104 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#container {
+    width: 90vw;
+    height: 50vh;
+    border: 5px solid green;
+    position: relative;
+}
+
+.controls {
+    position: absolute;
+    top: -100px;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.controls > * {
+    margin: 0 1rem;
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0.25rem;
+}
+
+.controls > button, .controls select {
+    border: 2px solid green;
+    color: green;
+    background: white;
+    outline: none;
+    transition-duration: 0.3s;
+}
+
+.controls > button:hover, .controls select:hover {
+    background: green;
+    color: white;
+}
+
+.controls > button:disabled, .controls select:disabled {
+    background: lightgrey;
+    color: gray;
+    border-color: gray;
+}
+
+.elem {
+    border: 2px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    transition-duration: 0.3s;
+}
+
+.elem::after {
+    position: absolute;
+    content: ' ';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    transition-duration: 0.3s;
+}
+
+.elem.active {
+    background: green;
+    color: white;
+}
+
+.elem.minimum, .elem.pivot {
+    background: grey;
+    color: white;
+}
+
+.elem.moving {
+    transition-timing-function: cubic-bezier(0.02, 0.01, 0.21, 1);
+}
+
+.elem.moving::after {
+    transition-timing-function: cubic-bezier(0.3, 0.27, 0.07, 1.64);
+}
+
+.elem.sorted {
+    background-color: green;
+    color: white;
+    border-color: green;
+    animation: zoomUnzoom 0.5s 1 ease;
+}
+
+@keyframes zoomUnzoom {
+    50% {
+        transform: scale(1.2);
+    }
+}

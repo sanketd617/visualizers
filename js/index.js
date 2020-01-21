@@ -19,6 +19,10 @@ class Controller {
         document.getElementById("random-btn").disabled = true;
         Controller.algorithmSelector.disabled = true;
 
+        for(let i = 0; i < Controller.numberOfItems; i++) {
+            Controller.viewMap[i].classList.remove('sorted');
+        }
+
         Controller.type = parseInt(Controller.algorithmSelector.value);
 
         let sortResult = Sorter.sort(Controller.array, Controller.type);
@@ -41,10 +45,16 @@ class Controller {
         } else {
             Visualizer.resizeViewsTo(Controller.viewMap, Controller.array, Controller.maxHeight);
         }
+        for(let i = 0; i < Controller.numberOfItems; i++) {
+            Controller.viewMap[i].classList.remove('sorted');
+        }
         Controller.setSpeed();
     }
 
     static shuffle() {
+        for(let i = 0; i < Controller.numberOfItems; i++) {
+            Controller.viewMap[i].classList.remove('sorted');
+        }
         for (let i = 0; i < Controller.array.length; i++) {
             let randomIndex = Math.floor(Math.random() * Controller.array.length);
             let t = Controller.array[i];
@@ -78,6 +88,12 @@ class Controller {
         document.getElementById("shuffle-btn").disabled = false;
         document.getElementById("random-btn").disabled = false;
         Controller.algorithmSelector.disabled = false;
+
+        for(let i = 0; i < Controller.array.length; i++) {
+            setTimeout(() => {
+                Controller.viewMap[i].classList.add('sorted');
+            }, (i + 1) * 100);
+        }
     }
 
     static removeViews() {
