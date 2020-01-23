@@ -16,7 +16,7 @@ class InsertionSorter {
                 type: Sorter.moveType.select
             });
             for (; j >= 0; j--) {
-                if (array[j] < t) {
+                if (array[j] <= t) {
                     j++;
                     break;
                 }
