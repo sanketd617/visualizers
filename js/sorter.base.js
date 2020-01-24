@@ -23,7 +23,9 @@ class Sorter {
         temporary: 5,
         select: 6,
         minimum: 7,
-        pivot: 8
+        pivot: 8,
+        merge_shrink: 9,
+        merge_grow: 10
     };
 
     static maxElements = 15;
