@@ -1,6 +1,6 @@
-// Credits for aStar algorithm code : https://briangrinstead.com/blog/astar-search-algorithm-in-javascript/
+// Credits for AStar algorithm code : https://briangrinstead.com/blog/astar-search-algorithm-in-javascript/
 
-let aStar = {
+let AStar = {
     init: function(grid) {
         for(let x = 0, xl = grid.length; x < xl; x++) {
             for(let y = 0, yl = grid[x].length; y < yl; y++) {
@@ -21,11 +21,11 @@ let aStar = {
         });
     },
     search: function(grid, start, end, diagonal, heuristic) {
-        aStar.init(grid);
-        heuristic = heuristic || aStar.manhattan;
+        AStar.init(grid);
+        heuristic = heuristic || AStar.manhattan;
         diagonal = !!diagonal;
 
-        let openHeap = aStar.heap();
+        let openHeap = AStar.heap();
 
         openHeap.push(start);
 
@@ -49,7 +49,7 @@ let aStar = {
             currentNode.closed = true;
 
             // Find all neighbors for the current node. Optionally find diagonal neighbors as well (false by default).
-            let neighbors = aStar.neighbors(grid, currentNode, diagonal);
+            let neighbors = AStar.neighbors(grid, currentNode, diagonal);
 
             for(let i=0, il = neighbors.length; i < il; i++) {
                 let neighbor = neighbors[i];

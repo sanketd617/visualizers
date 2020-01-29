@@ -103,21 +103,22 @@ class SortingController {
     }
 
     static createControls() {
-        return "<div class='sorting-controls'>"
-                   + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='SortingController.onSliderChange()'>"
-                   + "<select name='algorithm' id='algorithmSelector'>"
-                   + "</select>"
-                   + "<button id='start-btn' onclick='SortingController.startVisualization()'>START</button>"
-                   + "<button id='shuffle-btn' onclick='SortingController.shuffle()'>SHUFFLE</button>"
-                   + "<button id='random-btn' onclick='SortingController.randomize()'>RANDOM ARRAY</button>"
-               + "</div>";
+        let controls = "<div class='sub-controls'>"
+                                   + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='SortingController.onSliderChange()'>"
+                                   + "<select name='algorithm' id='algorithmSelector'>"
+                                   + "</select>"
+                                   + "<button id='start-btn' onclick='SortingController.startVisualization()'>START</button>"
+                                   + "<button id='shuffle-btn' onclick='SortingController.shuffle()'>SHUFFLE</button>"
+                                   + "<button id='random-btn' onclick='SortingController.randomize()'>RANDOM ARRAY</button>"
+                               + "</div>";
+        document.querySelector("#container > .controls > .sub").innerHTML = controls;
+
     }
 
     static init() {
         SortingController.container = document.getElementById("visualizer");
         SortingController.container.innerHTML = "";
-
-        document.querySelector("#container > .controls > .sub").innerHTML = SortingController.createControls();
+        SortingController.createControls();
 
         SortingController.algorithmSelector = document.getElementById("algorithmSelector");
         SortingController.slider = document.getElementById('slider');
