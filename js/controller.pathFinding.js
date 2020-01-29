@@ -13,13 +13,27 @@ class PathFindingController {
     static cellSize;
     static offset;
     static grid = [];
+    static start;
+    static end;
 
     static onSliderChange() {
 
     }
 
     static startVisualization() {
+        document.getElementById("start-btn").disabled = true;
+        document.getElementById("random-btn").disabled = true;
+        PathFindingController.algorithmSelector.disabled = true;
 
+        PathFindingController.type = parseInt(PathFindingController.algorithmSelector.value);
+
+        console.log(PathFindingController.start, PathFindingController.end);
+
+        let path = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type);
+        path.pop();
+        for(let node of path) {
+            PathFindingController.viewMap[node.x][node.y].classList.add('grid-path');
+        }
     }
 
     static setSpeed() {
@@ -36,10 +50,23 @@ class PathFindingController {
         PathFindingController.grid = [];
         for(let i = 0; i < PathFindingController.numberOfColumns; i++) {
             PathFindingController.grid.push([]);
+
             for(let j = 0; j < PathFindingController.numberOfRows; j++) {
-                PathFindingController.grid[i].push({
-                    isObstacle: [true, false, false, false, false][Math.floor(Math.random() * 5)]
-                });
+                let cell = {
+                    isObstacle: [true, false, false, false, false][Math.floor(Math.random() * 5)],
+                    x: i,
+                    y: j
+                };
+
+                // temp logic
+                if(i < PathFindingController.numberOfColumns/2 && !PathFindingController.start && !cell.isObstacle) {
+                    PathFindingController.start = cell;
+                }
+                else if(i > PathFindingController.numberOfColumns/2 && !PathFindingController.end && !cell.isObstacle) {
+                    PathFindingController.end = cell;
+                }
+                // end
+                PathFindingController.grid[i].push(cell);
             }
         }
 
@@ -50,6 +77,8 @@ class PathFindingController {
 //            SortingVisualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
         }
 
+        PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
+        PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
         PathFindingController.setSpeed();
     }
 

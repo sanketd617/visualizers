@@ -121,3 +121,11 @@ body {
 .grid-obstacle {
     background-color: grey;
 }
+
+.grid-end-point {
+    background-color: black;
+}
+
+.grid-path {
+    background-color: green;
+}

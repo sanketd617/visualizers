@@ -54,7 +54,7 @@ let AStar = {
             for(let i=0, il = neighbors.length; i < il; i++) {
                 let neighbor = neighbors[i];
 
-                if(neighbor.closed || neighbor.isWall()) {
+                if(neighbor.closed || neighbor.isObstacle) {
                     // Not a valid node to process, skip to next neighbor.
                     continue;
                 }
@@ -69,7 +69,7 @@ let AStar = {
                     // Found an optimal (so far) path to this node.  Take score for node to see how good it is.
                     neighbor.visited = true;
                     neighbor.parent = currentNode;
-                    neighbor.h = neighbor.h || heuristic(neighbor.pos, end.pos);
+                    neighbor.h = neighbor.h || heuristic(neighbor, end);
                     neighbor.g = gScore;
                     neighbor.f = neighbor.g + neighbor.h;
 
@@ -79,7 +79,8 @@ let AStar = {
                     }
                     else {
                         // Already seen the node, but since it has been rescored we need to reorder it in the heap
-                        openHeap.rescoreElement(neighbor);
+                        openHeap.remove(neighbor);
+                        openHeap.push(neighbor);
                     }
                 }
             }

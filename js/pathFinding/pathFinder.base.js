@@ -13,12 +13,12 @@ class PathFinder {
 
     static maxElements = 20;
 
-    static findPath(grid, type) {
+    static findPath(grid, start, end, type) {
 
         let gridCopy = grid.slice();
         switch (type) {
             case 1:
-                return AStar.search(grid);
+                return AStar.search(grid, start, end);
         }
     }
 }
