@@ -7,6 +7,9 @@ class PathFindingVisualizer {
             for(let j = 0; j < grid[0].length; j++) {
                 let cell = document.createElement("div");
                 cell.classList.add('grid-cell');
+                if(grid[i][j].isObstacle) {
+                    cell.classList.add('grid-obstacle');
+                }
                 cell.style.width = cellSize + 'px';
                 cell.style.height = cellSize + 'px';
                 cell.style.left = offset + cellSize * i + 'px';

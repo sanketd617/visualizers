@@ -37,11 +37,11 @@ class PathFindingController {
         for(let i = 0; i < PathFindingController.numberOfColumns; i++) {
             PathFindingController.grid.push([]);
             for(let j = 0; j < PathFindingController.numberOfRows; j++) {
-                PathFindingController.grid[i].push({});
+                PathFindingController.grid[i].push({
+                    isObstacle: [true, false, false, false, false][Math.floor(Math.random() * 5)]
+                });
             }
         }
-
-        console.log(PathFindingController.grid)
 
         if(toBeCreated) {
             PathFindingController.viewMap = PathFindingVisualizer.createViews(PathFindingController.grid, PathFindingController.cellSize, PathFindingController.maxWidth, PathFindingController.maxHeight, PathFindingController.offset);

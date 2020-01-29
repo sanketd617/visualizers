@@ -101,44 +101,44 @@ let AStar = {
         let y = node.y;
 
         // West
-        if(grid[x-1] && grid[x-1][y]) {
+        if(grid[x-1] && grid[x-1][y] && !grid[x-1][y].isObstacle) {
             ret.push(grid[x-1][y]);
         }
 
         // East
-        if(grid[x+1] && grid[x+1][y]) {
+        if(grid[x+1] && grid[x+1][y] && !grid[x+1][y].isObstacle) {
             ret.push(grid[x+1][y]);
         }
 
         // South
-        if(grid[x] && grid[x][y-1]) {
+        if(grid[x] && grid[x][y-1] && !grid[x][y-1].isObstacle) {
             ret.push(grid[x][y-1]);
         }
 
         // North
-        if(grid[x] && grid[x][y+1]) {
+        if(grid[x] && grid[x][y+1] && !grid[x][y+1].isObstacle) {
             ret.push(grid[x][y+1]);
         }
 
         if (diagonals) {
 
             // Southwest
-            if(grid[x-1] && grid[x-1][y-1]) {
+            if(grid[x-1] && grid[x-1][y-1] && !grid[x-1][y-1].isObstacle) {
                 ret.push(grid[x-1][y-1]);
             }
 
             // Southeast
-            if(grid[x+1] && grid[x+1][y-1]) {
+            if(grid[x+1] && grid[x+1][y-1] && !grid[x+1][y-1].isObstacle) {
                 ret.push(grid[x+1][y-1]);
             }
 
             // Northwest
-            if(grid[x-1] && grid[x-1][y+1]) {
+            if(grid[x-1] && grid[x-1][y+1] && !grid[x-1][y+1].isObstacle) {
                 ret.push(grid[x-1][y+1]);
             }
 
             // Northeast
-            if(grid[x+1] && grid[x+1][y+1]) {
+            if(grid[x+1] && grid[x+1][y+1] && !grid[x+1][x+1].isObstacle) {
                 ret.push(grid[x+1][y+1]);
             }
 
