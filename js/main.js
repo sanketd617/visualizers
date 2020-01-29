@@ -14,7 +14,7 @@ class RootController {
     }
 
     static init() {
-        RootController.activeController = RootController.childControllers[0];
+        RootController.activeController = RootController.childControllers[1];
         RootController.activeController.init();
     }
 }

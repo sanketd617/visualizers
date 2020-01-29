@@ -11,8 +11,8 @@
     <div class="controls">
         <div class="main">
             Algorithm type: <select name="algorithmTypeSelector" id="algorithmTypeSelector" onchange="RootController.onAlgorithmTypeChange()">
-                <option value="0">Sorting</option>
                 <option value="1">Path finding</option>
+                <option value="0">Sorting</option>
             </select>
         </div>
         <div class="sub">
@@ -25,21 +25,25 @@
 </div>
 
 <script src="js/ds/binaryHeap.js"></script>
-<script src="js/pathFinding/aStar.js"></script>
+<script src="js/pathFinding/pathFinder.base.js"></script>
+<script src="js/pathFinding/pathFinder.aStar.js"></script>
+<script src="js/pathFinding/visualizer.pathFinding.base.js"></script>
+<script src="js/pathFinding/visualizer.pathFinding.aStar.js"></script>
+
 <script src="js/sorting/sorter.bubble.js"></script>
 <script src="js/sorting/sorter.selection.js"></script>
 <script src="js/sorting/sorter.insertion.js"></script>
 <script src="js/sorting/sorter.quick.js"></script>
 <script src="js/sorting/sorter.merge.js"></script>
 <script src="js/sorting/sorter.base.js"></script>
-<script src="js/sorting/visualizer.bubble.js"></script>
-<script src="js/sorting/visualizer.selection.js"></script>
-<script src="js/sorting/visualizer.insertion.js"></script>
-<script src="js/sorting/visualizer.quick.js"></script>
-<script src="js/sorting/visualizer.merge.js"></script>
-<script src="js/sorting/visualizer.base.js"></script>
-<script src="js/sortingController.js"></script>
-<script src="js/pathFindingController.js"></script>
+<script src="js/sorting/visualizer.sorting.bubble.js"></script>
+<script src="js/sorting/visualizer.sorting.selection.js"></script>
+<script src="js/sorting/visualizer.sorting.insertion.js"></script>
+<script src="js/sorting/visualizer.sorting.quick.js"></script>
+<script src="js/sorting/visualizer.sorting.merge.js"></script>
+<script src="js/sorting/visualizer.sorting.base.js"></script>
+<script src="js/controller.sorting.js"></script>
+<script src="js/controller.pathFinding.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

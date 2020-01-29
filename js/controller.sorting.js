@@ -28,7 +28,7 @@ class SortingController {
         let sortResult = Sorter.sort(SortingController.array, SortingController.type);
         SortingController.moves = sortResult.moves;
 
-        Visualizer.visualize(SortingController.array, SortingController.moves, SortingController.viewMap, SortingController.type, SortingController.slider, SortingController.onVisualizationEnd);
+        SortingVisualizer.visualize(SortingController.array, SortingController.moves, SortingController.viewMap, SortingController.type, SortingController.slider, SortingController.onVisualizationEnd);
 
         SortingController.array = sortResult.array;
     }
@@ -40,10 +40,10 @@ class SortingController {
         }
 
         if(toBeCreated) {
-            SortingController.viewMap = Visualizer.createViews(SortingController.array, SortingController.maxWidth, SortingController.maxHeight);
-            Visualizer.layoutViews(SortingController.container, SortingController.viewMap, SortingController.array.length);
+            SortingController.viewMap = SortingVisualizer.createViews(SortingController.array, SortingController.maxWidth, SortingController.maxHeight);
+            SortingVisualizer.layoutViews(SortingController.container, SortingController.viewMap, SortingController.array.length);
         } else {
-            Visualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
+            SortingVisualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
         }
         for(let i = 0; i < SortingController.numberOfItems; i++) {
             SortingController.viewMap[i].classList.remove('sorted');
@@ -73,7 +73,7 @@ class SortingController {
 
     static setSpeed() {
         SortingController.speed = (parseFloat(SortingController.slider.min) + parseFloat(SortingController.slider.max) - parseFloat(SortingController.slider.value)) * 1000;
-        Visualizer.setSpeed(SortingController.speed);
+        SortingVisualizer.setSpeed(SortingController.speed);
         for (let i = 0; i < SortingController.array.length; i++) {
             SortingController.viewMap[i].style.transitionDuration = SortingController.speed / 1000 + 's';
         }
@@ -103,21 +103,22 @@ class SortingController {
     }
 
     static createControls() {
-        return "<div class='sorting-controls'>"
-                   + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='SortingController.onSliderChange()'>"
-                   + "<select name='algorithm' id='algorithmSelector'>"
-                   + "</select>"
-                   + "<button id='start-btn' onclick='SortingController.startVisualization()'>START</button>"
-                   + "<button id='shuffle-btn' onclick='SortingController.shuffle()'>SHUFFLE</button>"
-                   + "<button id='random-btn' onclick='SortingController.randomize()'>RANDOM ARRAY</button>"
-               + "</div>";
+        let controls = "<div class='sub-controls'>"
+                                   + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='SortingController.onSliderChange()'>"
+                                   + "<select name='algorithm' id='algorithmSelector'>"
+                                   + "</select>"
+                                   + "<button id='start-btn' onclick='SortingController.startVisualization()'>START</button>"
+                                   + "<button id='shuffle-btn' onclick='SortingController.shuffle()'>SHUFFLE</button>"
+                                   + "<button id='random-btn' onclick='SortingController.randomize()'>RANDOM ARRAY</button>"
+                               + "</div>";
+        document.querySelector("#container > .controls > .sub").innerHTML = controls;
+
     }
 
     static init() {
         SortingController.container = document.getElementById("visualizer");
         SortingController.container.innerHTML = "";
-
-        document.querySelector("#container > .controls > .sub").innerHTML = SortingController.createControls();
+        SortingController.createControls();
 
         SortingController.algorithmSelector = document.getElementById("algorithmSelector");
         SortingController.slider = document.getElementById('slider');

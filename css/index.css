@@ -31,12 +31,12 @@ body {
     padding: 1rem;
 }
 
-.controls .sub .sorting-controls {
+.controls .sub .sub-controls {
     display: flex;
     align-items: center;
 }
 
-.sorting-controls > *, .controls .main > * {
+.sub-controls > *, .controls .main > * {
     margin: 0 1rem;
     flex-grow: 1;
     flex-basis: 0;
@@ -51,12 +51,12 @@ body {
     transition-duration: 0.3s;
 }
 
-.sorting-controls > button:hover, .sorting-controls select:hover {
+.sub-controls > button:hover, .sub-controls select:hover {
     background: green;
     color: white;
 }
 
-.sorting-controls > button:disabled, .sorting-controls select:disabled {
+.sub-controls > button:disabled, .sub-controls select:disabled {
     background: lightgrey;
     color: gray;
     border-color: gray;
@@ -110,4 +110,35 @@ body {
     50% {
         transform: scale(1.2);
     }
+}
+
+.grid-cell {
+    position: absolute;
+    background-color: white;
+    border: 2px solid grey;
+}
+
+.grid-obstacle {
+    background-color: grey;
+}
+
+.grid-end-point {
+    background-color: black;
+}
+
+.grid-path {
+    background-color: green;
+    animation: zoomUnzoom 0.5s 1 ease;
+}
+
+.grid-visited {
+    background-color: lightgreen;
+}
+
+.grid-selected {
+    border-color: green;
+}
+
+.grid-updated {
+    animation: zoomUnzoom 0.5s 1 ease;
 }

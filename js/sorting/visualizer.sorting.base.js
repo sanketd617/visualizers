@@ -1,4 +1,4 @@
-class Visualizer {
+class SortingVisualizer {
     static maxSize = 50;
     static minSize = 30;
     static maxSpacing = 50;
@@ -14,8 +14,8 @@ class Visualizer {
 
     static createViews(array, maxWidth, maxHeight) {
         let total = array.length;
-        let spacing = Visualizer.minSpacing + (Visualizer.maxSpacing - Visualizer.minSpacing) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
-        let size = Visualizer.minSize + (Visualizer.maxSize - Visualizer.minSize) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
+        let spacing = SortingVisualizer.minSpacing + (SortingVisualizer.maxSpacing - SortingVisualizer.minSpacing) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
+        let size = SortingVisualizer.minSize + (SortingVisualizer.maxSize - SortingVisualizer.minSize) * Math.cos((total / Sorter.maxElements) * Math.PI / 2);
         let startLeft = (maxWidth - size * total - spacing * (total - 1)) / 2;
 
         let minValue = Math.min.apply(Math, array);
@@ -52,7 +52,7 @@ class Visualizer {
     static resizeViewsTo(viewMap, array, maxHeight) {
         let minValue = Math.min.apply(Math, array);
         let maxValue = Math.max.apply(Math, array);
-        let size = Visualizer.minSize + (Visualizer.maxSize - Visualizer.minSize) * Math.cos((array.length / Sorter.maxElements) * Math.PI / 2);
+        let size = SortingVisualizer.minSize + (SortingVisualizer.maxSize - SortingVisualizer.minSize) * Math.cos((array.length / Sorter.maxElements) * Math.PI / 2);
         let A = 0.2 * maxHeight;
         let B = 0.8 * maxHeight - size;
         let R = (B - A) / (maxValue - minValue);
