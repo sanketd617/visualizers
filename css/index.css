@@ -128,4 +128,17 @@ body {
 
 .grid-path {
     background-color: green;
+    animation: zoomUnzoom 0.5s 1 ease;
+}
+
+.grid-visited {
+    background-color: lightgreen;
+}
+
+.grid-selected {
+    border-color: green;
+}
+
+.grid-updated {
+    animation: zoomUnzoom 0.5s 1 ease;
 }

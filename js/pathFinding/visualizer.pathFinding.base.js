@@ -27,4 +27,19 @@ class PathFindingVisualizer {
             }
         }
     }
+
+    static visualize(grid, moves, viewMap, type, slider, onEnd) {
+        console.log("q", type)
+        switch (type) {
+            case PathFinder.typeMap.aStar:
+                console.log("w")
+                AStarVisualizer.visualize(grid, moves, viewMap, slider, onEnd);
+                break;
+
+        }
+    }
+
+    static setSpeed(speed) {
+        AStarVisualizer.setSpeed(speed);
+    }
 }

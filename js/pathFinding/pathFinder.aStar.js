@@ -29,6 +29,8 @@ let AStar = {
 
         openHeap.push(start);
 
+        let moves = [];
+
         while(openHeap.size() > 0) {
 
             // Grab the lowest f(x) to process next.  Heap keeps this sorted for us.
@@ -42,8 +44,16 @@ let AStar = {
                     ret.push(curr);
                     curr = curr.parent;
                 }
-                return ret.reverse();
+                return {
+                    path: ret.reverse(),
+                    moves: moves
+                };
             }
+
+            moves.push({
+                node: currentNode,
+                type: "select"
+            });
 
             // Normal case -- move currentNode from open to closed, process each of its neighbors.
             currentNode.closed = true;
@@ -73,6 +83,11 @@ let AStar = {
                     neighbor.g = gScore;
                     neighbor.f = neighbor.g + neighbor.h;
 
+                    moves.push({
+                        node: currentNode,
+                        type: "update"
+                    });
+
                     if (!beenVisited) {
                         // Pushing to heap will put it in proper place based on the 'f' value.
                         openHeap.push(neighbor);
@@ -87,7 +102,10 @@ let AStar = {
         }
 
         // No result was found - empty array signifies failure to find path.
-        return [];
+        return {
+            path: [],
+            moves: []
+        };
     },
     manhattan: function(pos0, pos1) {
         // See list of heuristics: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html

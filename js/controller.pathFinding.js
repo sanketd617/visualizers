@@ -15,6 +15,7 @@ class PathFindingController {
     static grid = [];
     static start;
     static end;
+    static path;
 
     static onSliderChange() {
 
@@ -29,19 +30,20 @@ class PathFindingController {
 
         console.log(PathFindingController.start, PathFindingController.end);
 
-        let path = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type);
-        path.pop();
-        for(let node of path) {
-            PathFindingController.viewMap[node.x][node.y].classList.add('grid-path');
-        }
+        let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type);
+        PathFindingController.path = pathMoves.path;
+        let moves = pathMoves.moves;
+        PathFindingController.path.pop();
+
+        PathFindingVisualizer.visualize(PathFindingController.grid, moves, PathFindingController.viewMap, PathFindingController.type, PathFindingController.slider, PathFindingController.onVisualizationEnd);
     }
 
     static setSpeed() {
         PathFindingController.speed = (parseFloat(PathFindingController.slider.min) + parseFloat(PathFindingController.slider.max) - parseFloat(PathFindingController.slider.value)) * 1000;
-//        PathFindingVisualizer.setSpeed(PathFindingController.speed);
+        PathFindingVisualizer.setSpeed(PathFindingController.speed);
         for (let i = 0; i < PathFindingController.grid.length; i++) {
             for (let j = 0; j < PathFindingController.grid[i].length; j++) {
-//                PathFindingController.viewMap[i].style.transitionDuration = PathFindingController.speed / 1000 + 's';
+                PathFindingController.viewMap[i].style.transitionDuration = PathFindingController.speed / 1000 + 's';
             }
         }
     }
@@ -80,6 +82,22 @@ class PathFindingController {
         PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
         PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
         PathFindingController.setSpeed();
+    }
+
+    static onVisualizationEnd(path) {
+        document.getElementById("start-btn").disabled = false;
+        document.getElementById("random-btn").disabled = false;
+        PathFindingController.algorithmSelector.disabled = false;
+        let count = 0;
+        for(let node of PathFindingController.path) {
+            setTimeout(function() {
+                PathFindingController.viewMap[node.x][node.y].classList.add('grid-path');
+                PathFindingController.viewMap[node.x][node.y].classList.remove('grid-visited');
+            }, count * PathFindingController.speed);
+            count++;
+        }
+        PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.remove('grid-visited');
+//        PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
     }
 
     static createControls() {
