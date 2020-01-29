@@ -111,3 +111,9 @@ body {
         transform: scale(1.2);
     }
 }
+
+.grid-cell {
+    position: absolute;
+    background-color: white;
+    border: 2px solid grey;
+}

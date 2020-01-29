@@ -9,11 +9,59 @@ class PathFindingController {
     static slider;
     static speed;
     static numberOfRows = 10;
-    static numberOfColumns = 10;
+    static numberOfColumns;
+    static cellSize;
+    static offset;
     static grid = [];
 
+    static onSliderChange() {
+
+    }
+
+    static startVisualization() {
+
+    }
+
+    static setSpeed() {
+        PathFindingController.speed = (parseFloat(PathFindingController.slider.min) + parseFloat(PathFindingController.slider.max) - parseFloat(PathFindingController.slider.value)) * 1000;
+//        PathFindingVisualizer.setSpeed(PathFindingController.speed);
+        for (let i = 0; i < PathFindingController.grid.length; i++) {
+            for (let j = 0; j < PathFindingController.grid[i].length; j++) {
+//                PathFindingController.viewMap[i].style.transitionDuration = PathFindingController.speed / 1000 + 's';
+            }
+        }
+    }
+
+    static randomize(toBeCreated) {
+        PathFindingController.grid = [];
+        for(let i = 0; i < PathFindingController.numberOfColumns; i++) {
+            PathFindingController.grid.push([]);
+            for(let j = 0; j < PathFindingController.numberOfRows; j++) {
+                PathFindingController.grid[i].push({});
+            }
+        }
+
+        console.log(PathFindingController.grid)
+
+        if(toBeCreated) {
+            PathFindingController.viewMap = PathFindingVisualizer.createViews(PathFindingController.grid, PathFindingController.cellSize, PathFindingController.maxWidth, PathFindingController.maxHeight, PathFindingController.offset);
+            PathFindingVisualizer.layoutViews(PathFindingController.container, PathFindingController.viewMap, PathFindingController.grid.length, PathFindingController.grid[0].length);
+        } else {
+//            SortingVisualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
+        }
+
+        PathFindingController.setSpeed();
+    }
+
     static createControls() {
-        console.log("creating controls")
+        let controls = "<div class='sub-controls'>"
+                           + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='PathFindingController.onSliderChange()'>"
+                           + "<select name='algorithm' id='algorithmSelector'>"
+                           + "</select>"
+                           + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
+                           + "<button id='random-btn' onclick='PathFindingController.randomize()'>RANDOM ARRAY</button>"
+                       + "</div>";
+        document.querySelector("#container > .controls > .sub").innerHTML = controls;
     }
 
     static init() {
@@ -40,7 +88,12 @@ class PathFindingController {
             PathFindingController.maxWidth = parseInt(window.getComputedStyle(PathFindingController.container, null).getPropertyValue("width"));
             PathFindingController.maxHeight = parseInt(window.getComputedStyle(PathFindingController.container, null).getPropertyValue("height"));
 
-//            PathFindingController.randomize(true);
+            PathFindingController.cellSize = parseInt(PathFindingController.maxHeight / PathFindingController.numberOfRows);
+            PathFindingController.numberOfColumns = parseInt(PathFindingController.maxWidth/PathFindingController.cellSize);
+
+            PathFindingController.offset = (PathFindingController.maxWidth - PathFindingController.numberOfColumns * PathFindingController.cellSize)/2;
+
+            PathFindingController.randomize(true);
 
         }, 100);
     }

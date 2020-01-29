@@ -28,7 +28,7 @@ class SortingController {
         let sortResult = Sorter.sort(SortingController.array, SortingController.type);
         SortingController.moves = sortResult.moves;
 
-        Visualizer.visualize(SortingController.array, SortingController.moves, SortingController.viewMap, SortingController.type, SortingController.slider, SortingController.onVisualizationEnd);
+        SortingVisualizer.visualize(SortingController.array, SortingController.moves, SortingController.viewMap, SortingController.type, SortingController.slider, SortingController.onVisualizationEnd);
 
         SortingController.array = sortResult.array;
     }
@@ -40,10 +40,10 @@ class SortingController {
         }
 
         if(toBeCreated) {
-            SortingController.viewMap = Visualizer.createViews(SortingController.array, SortingController.maxWidth, SortingController.maxHeight);
-            Visualizer.layoutViews(SortingController.container, SortingController.viewMap, SortingController.array.length);
+            SortingController.viewMap = SortingVisualizer.createViews(SortingController.array, SortingController.maxWidth, SortingController.maxHeight);
+            SortingVisualizer.layoutViews(SortingController.container, SortingController.viewMap, SortingController.array.length);
         } else {
-            Visualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
+            SortingVisualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
         }
         for(let i = 0; i < SortingController.numberOfItems; i++) {
             SortingController.viewMap[i].classList.remove('sorted');
@@ -73,7 +73,7 @@ class SortingController {
 
     static setSpeed() {
         SortingController.speed = (parseFloat(SortingController.slider.min) + parseFloat(SortingController.slider.max) - parseFloat(SortingController.slider.value)) * 1000;
-        Visualizer.setSpeed(SortingController.speed);
+        SortingVisualizer.setSpeed(SortingController.speed);
         for (let i = 0; i < SortingController.array.length; i++) {
             SortingController.viewMap[i].style.transitionDuration = SortingController.speed / 1000 + 's';
         }
