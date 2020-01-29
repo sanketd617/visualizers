@@ -9,30 +9,37 @@
 
 <div id="container">
     <div class="controls">
-        Speed &nbsp; <input id="slider" type="range" min="0.1" max="2" value="2" step="0.001" onchange="Controller.onSliderChange()">
+        <div class="main">
+            Algorithm type: <select name="algorithmTypeSelector" id="algorithmTypeSelector" onchange="RootController.onAlgorithmTypeChange()">
+                <option value="0">Sorting</option>
+                <option value="1">Path finding</option>
+            </select>
+        </div>
+        <div class="sub">
 
-        <select name="algorithm" id="algorithmSelector">
+        </div>
+    </div>
+    <div id="visualizer">
 
-        </select>
-
-        <button id="start-btn" onclick="Controller.startVisualization()">START</button>
-        <button id="shuffle-btn" onclick="Controller.shuffle()">SHUFFLE</button>
-        <button id="random-btn" onclick="Controller.randomize()">RANDOM ARRAY</button>
     </div>
 </div>
 
-<script src="js/sorter.bubble.js"></script>
-<script src="js/sorter.selection.js"></script>
-<script src="js/sorter.insertion.js"></script>
-<script src="js/sorter.quick.js"></script>
-<script src="js/sorter.merge.js"></script>
-<script src="js/sorter.base.js"></script>
-<script src="js/visualizer.bubble.js"></script>
-<script src="js/visualizer.selection.js"></script>
-<script src="js/visualizer.insertion.js"></script>
-<script src="js/visualizer.quick.js"></script>
-<script src="js/visualizer.merge.js"></script>
-<script src="js/visualizer.base.js"></script>
-<script src="js/index.js"></script>
+<script src="js/ds/binaryHeap.js"></script>
+<script src="js/pathFinding/aStar.js"></script>
+<script src="js/sorting/sorter.bubble.js"></script>
+<script src="js/sorting/sorter.selection.js"></script>
+<script src="js/sorting/sorter.insertion.js"></script>
+<script src="js/sorting/sorter.quick.js"></script>
+<script src="js/sorting/sorter.merge.js"></script>
+<script src="js/sorting/sorter.base.js"></script>
+<script src="js/sorting/visualizer.bubble.js"></script>
+<script src="js/sorting/visualizer.selection.js"></script>
+<script src="js/sorting/visualizer.insertion.js"></script>
+<script src="js/sorting/visualizer.quick.js"></script>
+<script src="js/sorting/visualizer.merge.js"></script>
+<script src="js/sorting/visualizer.base.js"></script>
+<script src="js/sortingController.js"></script>
+<script src="js/pathFindingController.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

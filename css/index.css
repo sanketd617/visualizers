@@ -18,23 +18,32 @@ body {
     position: relative;
 }
 
+#container #visualizer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .controls {
     position: absolute;
     top: -100px;
     width: 100%;
     padding: 1rem;
+}
+
+.controls .sub .sorting-controls {
     display: flex;
     align-items: center;
 }
 
-.controls > * {
+.sorting-controls > *, .controls .main > * {
     margin: 0 1rem;
     flex-grow: 1;
     flex-basis: 0;
     padding: 0.25rem;
 }
 
-.controls > button, .controls select {
+.controls button, .controls select {
     border: 2px solid green;
     color: green;
     background: white;
@@ -42,12 +51,12 @@ body {
     transition-duration: 0.3s;
 }
 
-.controls > button:hover, .controls select:hover {
+.sorting-controls > button:hover, .sorting-controls select:hover {
     background: green;
     color: white;
 }
 
-.controls > button:disabled, .controls select:disabled {
+.sorting-controls > button:disabled, .sorting-controls select:disabled {
     background: lightgrey;
     color: gray;
     border-color: gray;

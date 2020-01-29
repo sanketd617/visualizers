@@ -28,7 +28,7 @@ class Sorter {
         merge_grow: 10
     };
 
-    static maxElements = 15;
+    static maxElements = 20;
 
     static sort(array, type) {
 
