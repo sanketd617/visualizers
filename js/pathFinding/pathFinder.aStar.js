@@ -28,7 +28,7 @@ class AStar {
         openList.insert(start);
 
         while (!openList.empty()) {
-            let min = openList.extract();
+            let min = openList.extract((a) => ((a.x - end.x) * (a.x - end.x) + (a.y - end.y) * (a.y - end.y)));
             AStar.moves.push({
                 type: "select",
                 node: min
@@ -57,7 +57,7 @@ class AStar {
                     }
                     index = closedList.index(neighbour, AStar.comparator);
                     if (index !== -1) {
-                        openList.remove(index);
+                        closedList.remove(index);
                     }
                     openList.insert(newNeighbour);
                     AStar.moves.push({
