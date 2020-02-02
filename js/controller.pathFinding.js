@@ -30,8 +30,8 @@ class PathFindingController {
     }
 
     static removeViews() {
-        for(let row of PathFindingController.grid) {
-            for(let cell of row) {
+        for (let row of PathFindingController.grid) {
+            for (let cell of row) {
                 PathFindingController.container.removeChild(PathFindingController.viewMap[cell.x][cell.y]);
             }
         }
@@ -77,18 +77,12 @@ class PathFindingController {
 
             for (let j = 0; j < PathFindingController.numberOfRows; j++) {
                 let cell = PathFinder.getNode(i, j, PathFindingController.type);
-
-                // temp logic
-                if (i < PathFindingController.numberOfColumns / 2 && !PathFindingController.start && !cell.isBlocked) {
-                    PathFindingController.setStart(cell);
-                } else if (i > PathFindingController.numberOfColumns / 2 && !PathFindingController.end && !cell.isBlocked) {
-                    PathFindingController.setEnd(cell);
-                }
-
-                // end
                 PathFindingController.grid[i].push(cell);
             }
         }
+
+        PathFindingController.setStart(PathFindingController.grid[0][0]);
+        PathFindingController.setEnd(PathFindingController.grid[PathFindingController.grid.length - 1][PathFindingController.grid[0].length - 1]);
 
         if (toBeCreated) {
             PathFindingController.viewMap = PathFindingVisualizer.createViews(
@@ -113,7 +107,7 @@ class PathFindingController {
         PathFindingController.setSpeed();
     }
 
-    static onVisualizationEnd(path) {
+    static onVisualizationEnd() {
         document.getElementById("start-btn").disabled = false;
         document.getElementById("random-btn").disabled = false;
         PathFindingController.algorithmSelector.disabled = false;
@@ -131,14 +125,13 @@ class PathFindingController {
     }
 
     static createControls() {
-        let controls = "<div class='sub-controls'>"
+        document.querySelector("#container > .controls > .sub").innerHTML = "<div class='sub-controls'>"
             + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='PathFindingController.onSliderChange()'>"
             + "<select name='algorithm' id='algorithmSelector' onchange='PathFindingController.onAlgorithmChange()'>"
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
             + "<button id='random-btn' onclick='PathFindingController.randomize()'>RANDOM ARRAY</button>"
             + "</div>";
-        document.querySelector("#container > .controls > .sub").innerHTML = controls;
     }
 
     static init() {
