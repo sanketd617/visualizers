@@ -116,6 +116,10 @@ body {
     position: absolute;
     background-color: white;
     border: 2px solid grey;
+    transition-duration: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .grid-obstacle {
@@ -123,22 +127,26 @@ body {
 }
 
 .grid-end-point {
-    background-color: black;
+    background-color: lightblue;
 }
 
 .grid-path {
-    background-color: green;
+    background-color: green !important;
     animation: zoomUnzoom 0.5s 1 ease;
 }
 
 .grid-visited {
-    background-color: lightgreen;
+    background-color: lightgreen !important;
 }
 
 .grid-selected {
-    border-color: green;
+    background-color: grey !important;
 }
 
 .grid-updated {
     animation: zoomUnzoom 0.5s 1 ease;
+}
+
+.grid-highlighted {
+    background-color: antiquewhite;
 }
