@@ -118,14 +118,17 @@ class PathFindingVisualizer {
 
     static visualize(grid, moves, viewMap, type, slider, onEnd, controllerClass) {
         switch (type) {
+            case PathFinder.typeMap.djikstra:
+                DjikstraVisualizer.visualize(grid, moves, viewMap, slider, onEnd, controllerClass);
+                break;
             case PathFinder.typeMap.aStar:
                 AStarVisualizer.visualize(grid, moves, viewMap, slider, onEnd, controllerClass);
                 break;
-
         }
     }
 
     static setSpeed(speed) {
         AStarVisualizer.setSpeed(speed);
+        DjikstraVisualizer.setSpeed(speed);
     }
 }
