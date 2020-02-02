@@ -140,7 +140,9 @@ body {
 }
 
 .grid-selected {
-    background-color: grey !important;
+    border-radius: 50%;
+    transform: scale(0.9);
+    background-color: green !important;
 }
 
 .grid-updated {

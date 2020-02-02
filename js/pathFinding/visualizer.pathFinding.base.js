@@ -7,6 +7,7 @@ class PathFindingVisualizer {
 
     static createViews(grid, cellSize, maxWidth, maxHeight, offset, controllerClass) {
         let viewMap = [];
+        console.log("creating views");
         for(let i = 0; i < grid.length; i++) {
             viewMap.push([]);
             for(let j = 0; j < grid[0].length; j++) {
@@ -19,28 +20,17 @@ class PathFindingVisualizer {
                 cell.style.height = cellSize + 'px';
                 cell.style.left = offset + cellSize * i + 'px';
                 cell.style.top = cellSize * j + 'px';
-                // cell.onclick = () => {
-                //     if(!grid[i][j].isBlocked) {
-                //         cell.classList.add('grid-obstacle');
-                //         grid[i][j].isBlocked = true;
-                //     }
-                //     else {
-                //         cell.classList.remove('grid-obstacle');
-                //         grid[i][j].isBlocked = false;
-                //     }
-                // };
 
                 cell.onmousedown = () => {
                     PathFindingVisualizer.isDragOn = true;
+                    console.log(grid[i][j]);
                     if(grid[i][j].isStart) {
                         PathFindingVisualizer.isStartDragged = true;
                         PathFindingVisualizer.draggedCell = grid[i][j];
-                        console.log("start")
                     }
                     else if(grid[i][j].isEnd) {
                         PathFindingVisualizer.isEndDragged = true;
                         PathFindingVisualizer.draggedCell = grid[i][j];
-                        console.log("end")
                     }
                     else if(!grid[i][j].isBlocked) {
                         cell.classList.add('grid-obstacle');
@@ -69,7 +59,6 @@ class PathFindingVisualizer {
                                 return;
                             }
                             let {x, y} = PathFindingVisualizer.draggedCell;
-                            console.log(x, y)
                             PathFindingVisualizer.draggedCell.isStart = false;
                             viewMap[x][y].classList.remove('grid-end-point');
                             PathFindingVisualizer.draggedCell = grid[i][j];
@@ -89,15 +78,13 @@ class PathFindingVisualizer {
                             cell.classList.add('grid-end-point');
                             controllerClass.setEnd(grid[i][j]);
                         }
+                        else if(PathFindingVisualizer.toBeBlocked) {
+                            cell.classList.add('grid-obstacle');
+                            grid[i][j].isBlocked = true;
+                        }
                         else {
-                            if(PathFindingVisualizer.toBeBlocked) {
-                                cell.classList.add('grid-obstacle');
-                                grid[i][j].isBlocked = true;
-                            }
-                            else {
-                                cell.classList.remove('grid-obstacle');
-                                grid[i][j].isBlocked = false;
-                            }
+                            cell.classList.remove('grid-obstacle');
+                            grid[i][j].isBlocked = false;
                         }
                     }
                 };
@@ -118,14 +105,17 @@ class PathFindingVisualizer {
 
     static visualize(grid, moves, viewMap, type, slider, onEnd, controllerClass) {
         switch (type) {
+            case PathFinder.typeMap.djikstra:
+                DjikstraVisualizer.visualize(grid, moves, viewMap, slider, onEnd, controllerClass);
+                break;
             case PathFinder.typeMap.aStar:
                 AStarVisualizer.visualize(grid, moves, viewMap, slider, onEnd, controllerClass);
                 break;
-
         }
     }
 
     static setSpeed(speed) {
         AStarVisualizer.setSpeed(speed);
+        DjikstraVisualizer.setSpeed(speed);
     }
 }

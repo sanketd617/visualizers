@@ -1,26 +1,24 @@
-class AStarVisualizer {
+class DjikstraVisualizer {
     static speed;
     static index;
     static moves;
     static onEnd;
     static viewMap;
     static visualize(grid, moves, viewMap, slider, onEnd, controllerClass) {
-        AStarVisualizer.index = 0;
-        AStarVisualizer.moves = moves;
-        AStarVisualizer.onEnd = onEnd;
-        AStarVisualizer.viewMap = viewMap;
-        let selected = null;
-        let updated = null;
+        DjikstraVisualizer.index = 0;
+        DjikstraVisualizer.moves = moves;
+        DjikstraVisualizer.onEnd = onEnd;
+        DjikstraVisualizer.viewMap = viewMap;
         let move;
+        let selected = null;
 
         function animateInternally() {
-            if(AStarVisualizer.index >= AStarVisualizer.moves.length) {
-                selected.classList.remove("grid-selected");
-                AStarVisualizer.onEnd();
+            if(DjikstraVisualizer.index >= DjikstraVisualizer.moves.length) {
+                DjikstraVisualizer.onEnd();
                 return;
             }
 
-            move = AStarVisualizer.moves[AStarVisualizer.index];
+            move = DjikstraVisualizer.moves[DjikstraVisualizer.index];
 
             switch (move.type) {
                 case "select":
@@ -32,17 +30,17 @@ class AStarVisualizer {
                     break;
                 case "update":
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
-                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
+                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.distance;
                     break;
             }
-            AStarVisualizer.index++;
-            setTimeout(animateInternally, AStarVisualizer.speed);
+            DjikstraVisualizer.index++;
+            setTimeout(animateInternally, DjikstraVisualizer.speed);
         }
 
         animateInternally();
     }
 
     static setSpeed(speed) {
-        AStarVisualizer.speed = speed;
+        DjikstraVisualizer.speed = speed;
     }
 }
