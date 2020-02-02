@@ -18,11 +18,7 @@ class PathFindingController {
     static path;
 
     static onSliderChange() {
-
-    }
-
-    static onNext() {
-
+        PathFindingController.setSpeed();
     }
 
     static startVisualization() {
@@ -103,7 +99,7 @@ class PathFindingController {
                 PathFindingController.grid[0].length,
                 PathFindingController);
         } else {
-//            SortingVisualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
+//            PathFindingVisualizer.resizeViewsTo(PathFindingController.viewMap, PathFindingController.array, PathFindingController.maxHeight);
         }
 
         PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
@@ -125,7 +121,7 @@ class PathFindingController {
             count++;
         }
         PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.remove('grid-visited');
-//        PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
+        PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.remove('grid-visited');
     }
 
     static createControls() {
@@ -135,7 +131,6 @@ class PathFindingController {
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
             + "<button id='random-btn' onclick='PathFindingController.randomize()'>RANDOM ARRAY</button>"
-            + "<button id='next-btn' onclick='PathFindingController.onNext()'>NEXT</button>"
             + "</div>";
         document.querySelector("#container > .controls > .sub").innerHTML = controls;
     }

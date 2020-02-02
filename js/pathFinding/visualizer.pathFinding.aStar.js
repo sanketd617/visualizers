@@ -16,7 +16,6 @@ class AStarVisualizer {
         function animateInternally() {
             if(AStarVisualizer.index >= AStarVisualizer.moves.length) {
                 selected.classList.remove("grid-selected");
-                viewMap[move.node.x][move.node.y].classList.remove("grid-visited");
                 AStarVisualizer.onEnd();
                 return;
             }
@@ -33,11 +32,10 @@ class AStarVisualizer {
                     break;
                 case "update":
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
+                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
                     break;
             }
-            viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
             AStarVisualizer.index++;
-
             setTimeout(animateInternally, AStarVisualizer.speed);
         }
 
@@ -45,6 +43,7 @@ class AStarVisualizer {
     }
 
     static setSpeed(speed) {
+        console.log("speed", AStarVisualizer.speed);
         AStarVisualizer.speed = speed;
     }
 }

@@ -2,43 +2,66 @@ class AStar {
     static moves = [];
 
     static search(grid, start, end) {
-        let heap = new ListHeap((node) => node.g + node.h);
+        let openList = new ListHeap((node) => node.g + node.h);
+        let closedList = new ListHeap((node) => node.g + node.h);
         start.g = 0;
-        start.h = Math.abs(start.y - end.y) + Math.abs(start.x - end.x);
-        heap.insert(start);
+        let dx = Math.abs(end.x - start.x);
+        let dy = Math.abs(end.y - start.y);
+        start.h = Math.abs(dx - dy) * 10 + Math.min(dx, dy) * 14;
+        AStar.moves.push({
+            type: "update",
+            node: start
+        });
+        // console.log(start.h);
+        openList.insert(start);
 
-        while (!heap.empty()) {
-            let min = heap.extract();
-            if(min.isEnd) {
-                return {
-                    path: AStar.getPath(grid, start, end),
-                    moves: AStar.moves
-                }
-            }
+        while (!openList.empty()) {
+            let min = openList.extract();
             AStar.moves.push({
                 type: "select",
                 node: min
             });
-            let neighbours = AStar.neighbours(grid, min);
+            let neighbours = AStar.neighbours(grid, min, closedList);
             for (let neighbour of neighbours) {
+                if (neighbour.isEnd) {
+                    neighbour.parent = min;
+                    return {
+                        path: AStar.getPath(grid, start, end),
+                        moves: AStar.moves
+                    }
+                }
                 let newNeighbour = {...neighbour};
-                newNeighbour.g = min.g + (newNeighbour.x !== neighbour.x && newNeighbour.y !== neighbour.y ? 14 : 10);
-                newNeighbour.h = Math.abs(newNeighbour.y - end.y) + Math.abs(newNeighbour.x - end.x);
+                newNeighbour.g = min.g + (newNeighbour.x !== min.x && newNeighbour.y !== min.y ? 14 : 10);
+
+                dx = Math.abs(end.x - newNeighbour.x);
+                dy = Math.abs(end.y - newNeighbour.y);
+                newNeighbour.h = Math.abs(dx - dy) * 10 + Math.min(dx, dy) * 14;
+
+                if(newNeighbour.x === 1 && newNeighbour.y === 1) {
+                    console.log("new", newNeighbour.g, newNeighbour.h, newNeighbour.g + newNeighbour.h);
+                    console.log("min", min.g, min.h, min.g + min.h);
+                }
+
                 newNeighbour.parent = min;
                 grid[newNeighbour.x][newNeighbour.y] = newNeighbour;
-                if(newNeighbour.g + newNeighbour.h < neighbour.g + neighbour.h) {
-                    // console.log(newNeighbour);
-                    let index = heap.index(neighbour, AStar.comparator);
-                    if(index !== -1) {
-                        heap.remove(index);
+                if (newNeighbour.g + newNeighbour.h < neighbour.g + neighbour.h) {
+                    // console.log(newNeighbour.g + newNeighbour.h, neighbour.g + neighbour.h);
+                    let index = openList.index(neighbour, AStar.comparator);
+                    if (index !== -1) {
+                        openList.remove(index);
                     }
-                    heap.insert(newNeighbour);
+                    index = closedList.index(neighbour, AStar.comparator);
+                    if (index !== -1) {
+                        openList.remove(index);
+                    }
+                    openList.insert(newNeighbour);
                     AStar.moves.push({
                         type: "update",
                         node: newNeighbour
                     });
                 }
             }
+            closedList.insert(min);
         }
         return {
             path: [],
@@ -64,7 +87,7 @@ class AStar {
         return a.x === b.x && a.y === b.y;
     }
 
-    static neighbours(grid, node) {
+    static neighbours(grid, node, closedList) {
         let x = [0, 1, 0, -1, -1, -1, 1, 1];
         let y = [1, 0, -1, 0, -1, 1, -1, 1];
         let result = [];
@@ -76,7 +99,15 @@ class AStar {
                 continue;
             }
 
-            if(grid[nx][ny].isBlocked) {
+            if (grid[nx][ny].isBlocked) {
+                continue;
+            }
+
+            if (node.parent !== null && grid[nx][ny].x === node.parent.x && grid[nx][ny].y === node.parent.y) {
+                continue;
+            }
+
+            if(closedList.index(grid[nx][ny], AStar.comparator) !== -1) {
                 continue;
             }
 
