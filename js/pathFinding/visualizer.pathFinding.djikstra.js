@@ -30,7 +30,7 @@ class DjikstraVisualizer {
                     break;
                 case "update":
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
-                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.distance;
+                    // viewMap[move.node.x][move.node.y].innerHTML  = "<i class='fas fa-chevron-right'></i>";
                     break;
             }
             DjikstraVisualizer.index++;

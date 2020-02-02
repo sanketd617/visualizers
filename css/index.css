@@ -2,6 +2,14 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                     supported by Chrome, Opera and Firefox */
 }
 
 body {
@@ -14,7 +22,7 @@ body {
 #container {
     width: 90vw;
     height: 50vh;
-    border: 5px solid green;
+    border: 5px solid #3CAEA3;
     position: relative;
 }
 
@@ -44,15 +52,15 @@ body {
 }
 
 .controls button, .controls select {
-    border: 2px solid green;
-    color: green;
+    border: 2px solid #3CAEA3;
+    color: #3CAEA3;
     background: white;
     outline: none;
     transition-duration: 0.3s;
 }
 
 .sub-controls > button:hover, .sub-controls select:hover {
-    background: green;
+    background: #3CAEA3;
     color: white;
 }
 
@@ -82,7 +90,7 @@ body {
 }
 
 .elem.active {
-    background: green;
+    background: #3CAEA3;
     color: white;
 }
 
@@ -100,9 +108,9 @@ body {
 }
 
 .elem.sorted {
-    background-color: green;
+    background-color: #3CAEA3;
     color: white;
-    border-color: green;
+    border-color: #3CAEA3;
     animation: zoomUnzoom 0.5s 1 ease;
 }
 
@@ -112,10 +120,16 @@ body {
     }
 }
 
+@keyframes zoom2 {
+    50% {
+        transform: scale(0.8);
+    }
+}
+
 .grid-cell {
     position: absolute;
     background-color: white;
-    border: 2px solid grey;
+    border: 1px solid grey;
     transition-duration: 0.3s;
     display: flex;
     justify-content: center;
@@ -127,28 +141,18 @@ body {
 }
 
 .grid-end-point {
-    background-color: lightblue;
+    border: 5px solid #3CAEA3;
 }
 
 .grid-path {
-    background-color: green !important;
-    animation: zoomUnzoom 0.5s 1 ease;
+    background-color: #3CAEA3 !important;
+    animation: zoom2 0.5s 1 ease;
 }
 
 .grid-visited {
-    background-color: lightgreen !important;
+    background-color: #F6D55C;
 }
 
 .grid-selected {
-    border-radius: 50%;
-    transform: scale(0.9);
-    background-color: green !important;
-}
-
-.grid-updated {
-    animation: zoomUnzoom 0.5s 1 ease;
-}
-
-.grid-highlighted {
-    background-color: antiquewhite;
+    background-color: #3CAEA3 !important;
 }

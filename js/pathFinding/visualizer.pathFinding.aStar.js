@@ -32,7 +32,7 @@ class AStarVisualizer {
                     break;
                 case "update":
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
-                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
+                    // viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
                     break;
             }
             AStarVisualizer.index++;

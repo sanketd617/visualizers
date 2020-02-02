@@ -8,7 +8,7 @@ class PathFindingController {
     static algorithmSelector;
     static slider;
     static speed;
-    static numberOfRows = 10;
+    static numberOfRows = 15;
     static numberOfColumns;
     static cellSize;
     static offset;
@@ -26,7 +26,7 @@ class PathFindingController {
         PathFindingController.removeViews();
         PathFindingController.start = null;
         PathFindingController.end = null;
-        PathFindingController.randomize(true);
+        PathFindingController.createGrid(true);
     }
 
     static removeViews() {
@@ -39,7 +39,6 @@ class PathFindingController {
 
     static startVisualization() {
         document.getElementById("start-btn").disabled = true;
-        document.getElementById("random-btn").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
 
         let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type);
@@ -70,7 +69,7 @@ class PathFindingController {
         cell.isEnd = true;
     }
 
-    static randomize(toBeCreated) {
+    static createGrid() {
         PathFindingController.grid = [];
         for (let i = 0; i < PathFindingController.numberOfColumns; i++) {
             PathFindingController.grid.push([]);
@@ -84,23 +83,19 @@ class PathFindingController {
         PathFindingController.setStart(PathFindingController.grid[0][0]);
         PathFindingController.setEnd(PathFindingController.grid[PathFindingController.grid.length - 1][PathFindingController.grid[0].length - 1]);
 
-        if (toBeCreated) {
-            PathFindingController.viewMap = PathFindingVisualizer.createViews(
-                PathFindingController.grid,
-                PathFindingController.cellSize,
-                PathFindingController.maxWidth,
-                PathFindingController.maxHeight,
-                PathFindingController.offset,
-                PathFindingController);
-            PathFindingVisualizer.layoutViews(
-                PathFindingController.container,
-                PathFindingController.viewMap,
-                PathFindingController.grid.length,
-                PathFindingController.grid[0].length,
-                PathFindingController);
-        } else {
-//            PathFindingVisualizer.resizeViewsTo(PathFindingController.viewMap, PathFindingController.array, PathFindingController.maxHeight);
-        }
+        PathFindingController.viewMap = PathFindingVisualizer.createViews(
+            PathFindingController.grid,
+            PathFindingController.cellSize,
+            PathFindingController.maxWidth,
+            PathFindingController.maxHeight,
+            PathFindingController.offset,
+            PathFindingController);
+        PathFindingVisualizer.layoutViews(
+            PathFindingController.container,
+            PathFindingController.viewMap,
+            PathFindingController.grid.length,
+            PathFindingController.grid[0].length,
+            PathFindingController);
 
         PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
         PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
@@ -109,7 +104,6 @@ class PathFindingController {
 
     static onVisualizationEnd() {
         document.getElementById("start-btn").disabled = false;
-        document.getElementById("random-btn").disabled = false;
         PathFindingController.algorithmSelector.disabled = false;
         let count = 0;
         for (let node of PathFindingController.path) {
@@ -130,7 +124,6 @@ class PathFindingController {
             + "<select name='algorithm' id='algorithmSelector' onchange='PathFindingController.onAlgorithmChange()'>"
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
-            + "<button id='random-btn' onclick='PathFindingController.randomize()'>RANDOM ARRAY</button>"
             + "</div>";
     }
 
@@ -163,7 +156,7 @@ class PathFindingController {
 
             PathFindingController.offset = (PathFindingController.maxWidth - PathFindingController.numberOfColumns * PathFindingController.cellSize) / 2;
 
-            PathFindingController.randomize(true);
+            PathFindingController.createGrid();
 
         }, 100);
     }
