@@ -10,6 +10,7 @@ class DjikstraVisualizer {
         DjikstraVisualizer.onEnd = onEnd;
         DjikstraVisualizer.viewMap = viewMap;
         let move;
+        let selected = null;
 
         function animateInternally() {
             if(DjikstraVisualizer.index >= DjikstraVisualizer.moves.length) {
@@ -21,7 +22,15 @@ class DjikstraVisualizer {
 
             switch (move.type) {
                 case "select":
-
+                    if(selected) {
+                        selected.classList.remove("grid-selected");
+                    }
+                    selected = viewMap[move.node.x][move.node.y];
+                    selected.classList.add("grid-selected");
+                    break;
+                case "update":
+                    viewMap[move.node.x][move.node.y].classList.add("grid-visited");
+                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.g;
                     break;
             }
             DjikstraVisualizer.index++;

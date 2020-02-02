@@ -2,14 +2,24 @@ class Djikstra {
     static moves = [];
 
     static search(grid, start, end) {
+        start.g = 0;
         let queue = [start];
 
         while (queue.length > 0) {
             let first = queue.shift();
+            Djikstra.moves.push({
+                type: "select",
+                node: first
+            });
 
             for (let neighbour of Djikstra.neighbours(grid, first)) {
                 neighbour.isBlocked = true;
                 neighbour.parent = first;
+                neighbour.g = first.g + 1;
+                Djikstra.moves.push({
+                    type: "update",
+                    node: neighbour
+                });
                 if(neighbour.isEnd) {
                     return {
                         path: Djikstra.getPath(grid, start, end),
