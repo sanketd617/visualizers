@@ -1,40 +1,43 @@
 class AStarVisualizer {
     static speed;
-    static visualize(grid, moves, viewMap, slider, onEnd) {
-        let index = 0;
+    static index;
+    static moves;
+    static onEnd;
+    static viewMap;
+    static visualize(grid, moves, viewMap, slider, onEnd, controllerClass) {
+        AStarVisualizer.index = 0;
+        AStarVisualizer.moves = moves;
+        AStarVisualizer.onEnd = onEnd;
+        AStarVisualizer.viewMap = viewMap;
         let selected = null;
         let updated = null;
-        console.log("e")
+        let move;
+
         function animateInternally() {
-            if(index >= moves.length) {
-                onEnd();
+            if(AStarVisualizer.index >= AStarVisualizer.moves.length) {
+                selected.classList.remove("grid-selected");
+                viewMap[move.node.x][move.node.y].classList.remove("grid-visited");
+                AStarVisualizer.onEnd();
                 return;
             }
 
-            let move = moves[index];
+            move = AStarVisualizer.moves[AStarVisualizer.index];
 
-            switch(move.type) {
+            switch (move.type) {
                 case "select":
                     if(selected) {
                         selected.classList.remove("grid-selected");
                     }
                     selected = viewMap[move.node.x][move.node.y];
-                    viewMap[move.node.x][move.node.y].classList.add("grid-selected");
-                    viewMap[move.node.x][move.node.y].classList.add("grid-visited");
-                    viewMap[move.node.x][move.node.y].innerHTML = move.node.f;
+                    selected.classList.add("grid-selected");
                     break;
                 case "update":
-                    if(updated) {
-                        updated.classList.remove("grid-updated");
-                    }
-                    updated = viewMap[move.node.x][move.node.y];
-                    viewMap[move.node.x][move.node.y].classList.add("grid-updated");
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
-                    viewMap[move.node.x][move.node.y].innerHTML = move.node.f;
                     break;
             }
+            viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
+            AStarVisualizer.index++;
 
-            index++;
             setTimeout(animateInternally, AStarVisualizer.speed);
         }
 

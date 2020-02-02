@@ -1,19 +1,107 @@
 class PathFindingVisualizer {
+    static isDragOn = false;
+    static toBeBlocked = false;
+    static isStartDragged = false;
+    static isEndDragged = false;
+    static draggedCell = null;
 
-    static createViews(grid, cellSize, maxWidth, maxHeight, offset) {
+    static createViews(grid, cellSize, maxWidth, maxHeight, offset, controllerClass) {
         let viewMap = [];
         for(let i = 0; i < grid.length; i++) {
             viewMap.push([]);
             for(let j = 0; j < grid[0].length; j++) {
                 let cell = document.createElement("div");
                 cell.classList.add('grid-cell');
-                if(grid[i][j].isObstacle) {
+                if(grid[i][j].isBlocked) {
                     cell.classList.add('grid-obstacle');
                 }
                 cell.style.width = cellSize + 'px';
                 cell.style.height = cellSize + 'px';
                 cell.style.left = offset + cellSize * i + 'px';
                 cell.style.top = cellSize * j + 'px';
+                // cell.onclick = () => {
+                //     if(!grid[i][j].isBlocked) {
+                //         cell.classList.add('grid-obstacle');
+                //         grid[i][j].isBlocked = true;
+                //     }
+                //     else {
+                //         cell.classList.remove('grid-obstacle');
+                //         grid[i][j].isBlocked = false;
+                //     }
+                // };
+
+                cell.onmousedown = () => {
+                    PathFindingVisualizer.isDragOn = true;
+                    if(grid[i][j].isStart) {
+                        PathFindingVisualizer.isStartDragged = true;
+                        PathFindingVisualizer.draggedCell = grid[i][j];
+                        console.log("start")
+                    }
+                    else if(grid[i][j].isEnd) {
+                        PathFindingVisualizer.isEndDragged = true;
+                        PathFindingVisualizer.draggedCell = grid[i][j];
+                        console.log("end")
+                    }
+                    else if(!grid[i][j].isBlocked) {
+                        cell.classList.add('grid-obstacle');
+                        grid[i][j].isBlocked = true;
+                        PathFindingVisualizer.toBeBlocked = true;
+                    }
+                    else {
+                        cell.classList.remove('grid-obstacle');
+                        grid[i][j].isBlocked = false;
+                        PathFindingVisualizer.toBeBlocked = false;
+                    }
+                };
+
+                cell.onmouseup = () => {
+                    PathFindingVisualizer.isDragOn = false;
+                    PathFindingVisualizer.toBeBlocked = false;
+                    PathFindingVisualizer.isStartDragged = false;
+                    PathFindingVisualizer.isEndDragged = false;
+                    PathFindingVisualizer.draggedCell = null;
+                };
+
+                cell.onmouseenter = () => {
+                    if(PathFindingVisualizer.isDragOn) {
+                        if(PathFindingVisualizer.isStartDragged) {
+                            if(grid[i][j].isEnd) {
+                                return;
+                            }
+                            let {x, y} = PathFindingVisualizer.draggedCell;
+                            console.log(x, y)
+                            PathFindingVisualizer.draggedCell.isStart = false;
+                            viewMap[x][y].classList.remove('grid-end-point');
+                            PathFindingVisualizer.draggedCell = grid[i][j];
+                            PathFindingVisualizer.draggedCell.isStart = true;
+                            cell.classList.add('grid-end-point');
+                            controllerClass.setStart(grid[i][j]);
+                        }
+                        else if(PathFindingVisualizer.isEndDragged) {
+                            if(grid[i][j].isStart) {
+                                return;
+                            }
+                            let {x, y} = PathFindingVisualizer.draggedCell;
+                            PathFindingVisualizer.draggedCell.isEnd = false;
+                            viewMap[x][y].classList.remove('grid-end-point');
+                            PathFindingVisualizer.draggedCell = grid[i][j];
+                            PathFindingVisualizer.draggedCell.isEnd = true;
+                            cell.classList.add('grid-end-point');
+                            controllerClass.setEnd(grid[i][j]);
+                        }
+                        else {
+                            if(PathFindingVisualizer.toBeBlocked) {
+                                cell.classList.add('grid-obstacle');
+                                grid[i][j].isBlocked = true;
+                            }
+                            else {
+                                cell.classList.remove('grid-obstacle');
+                                grid[i][j].isBlocked = false;
+                            }
+                        }
+                    }
+                };
+
                 viewMap[i].push(cell);
             }
         }
@@ -28,12 +116,10 @@ class PathFindingVisualizer {
         }
     }
 
-    static visualize(grid, moves, viewMap, type, slider, onEnd) {
-        console.log("q", type)
+    static visualize(grid, moves, viewMap, type, slider, onEnd, controllerClass) {
         switch (type) {
             case PathFinder.typeMap.aStar:
-                console.log("w")
-                AStarVisualizer.visualize(grid, moves, viewMap, slider, onEnd);
+                AStarVisualizer.visualize(grid, moves, viewMap, slider, onEnd, controllerClass);
                 break;
 
         }
