@@ -30,7 +30,7 @@ class DjikstraVisualizer {
                     break;
                 case "update":
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
-                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.g;
+                    viewMap[move.node.x][move.node.y].innerHTML  = move.node.distance;
                     break;
             }
             DjikstraVisualizer.index++;
@@ -41,7 +41,6 @@ class DjikstraVisualizer {
     }
 
     static setSpeed(speed) {
-        console.log("speed", DjikstraVisualizer.speed);
         DjikstraVisualizer.speed = speed;
     }
 }

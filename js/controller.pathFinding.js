@@ -21,12 +21,26 @@ class PathFindingController {
         PathFindingController.setSpeed();
     }
 
+    static onAlgorithmChange() {
+        PathFindingController.type = parseInt(PathFindingController.algorithmSelector.value);
+        PathFindingController.removeViews();
+        PathFindingController.start = null;
+        PathFindingController.end = null;
+        PathFindingController.randomize(true);
+    }
+
+    static removeViews() {
+        for(let row of PathFindingController.grid) {
+            for(let cell of row) {
+                PathFindingController.container.removeChild(PathFindingController.viewMap[cell.x][cell.y]);
+            }
+        }
+    }
+
     static startVisualization() {
         document.getElementById("start-btn").disabled = true;
         document.getElementById("random-btn").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
-
-        PathFindingController.type = parseInt(PathFindingController.algorithmSelector.value);
 
         let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type);
         PathFindingController.path = pathMoves.path;
@@ -62,16 +76,7 @@ class PathFindingController {
             PathFindingController.grid.push([]);
 
             for (let j = 0; j < PathFindingController.numberOfRows; j++) {
-                let cell = {
-                    isBlocked: false, //[true, false, false, false, false][Math.floor(Math.random() * 5)],
-                    x: i,
-                    y: j,
-                    g: 100000,
-                    h: 100000,
-                    parent: null,
-                    isStart: false,
-                    isEnd: false
-                };
+                let cell = PathFinder.getNode(i, j, PathFindingController.type);
 
                 // temp logic
                 if (i < PathFindingController.numberOfColumns / 2 && !PathFindingController.start && !cell.isBlocked) {
@@ -79,6 +84,7 @@ class PathFindingController {
                 } else if (i > PathFindingController.numberOfColumns / 2 && !PathFindingController.end && !cell.isBlocked) {
                     PathFindingController.setEnd(cell);
                 }
+
                 // end
                 PathFindingController.grid[i].push(cell);
             }
@@ -127,7 +133,7 @@ class PathFindingController {
     static createControls() {
         let controls = "<div class='sub-controls'>"
             + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='PathFindingController.onSliderChange()'>"
-            + "<select name='algorithm' id='algorithmSelector'>"
+            + "<select name='algorithm' id='algorithmSelector' onchange='PathFindingController.onAlgorithmChange()'>"
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
             + "<button id='random-btn' onclick='PathFindingController.randomize()'>RANDOM ARRAY</button>"

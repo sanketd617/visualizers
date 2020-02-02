@@ -43,7 +43,6 @@ class AStarVisualizer {
     }
 
     static setSpeed(speed) {
-        console.log("speed", AStarVisualizer.speed);
         AStarVisualizer.speed = speed;
     }
 }

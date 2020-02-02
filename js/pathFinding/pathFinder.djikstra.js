@@ -1,8 +1,20 @@
 class Djikstra {
     static moves = [];
 
+    static getNode(x, y) {
+        return {
+            isBlocked: false,
+            x: x,
+            y: y,
+            parent: null,
+            isStart: false,
+            isEnd: false,
+            distance: Infinity
+        }
+    }
+
     static search(grid, start, end) {
-        start.g = 0;
+        start.distance = 0;
         let queue = [start];
 
         while (queue.length > 0) {
@@ -15,12 +27,12 @@ class Djikstra {
             for (let neighbour of Djikstra.neighbours(grid, first)) {
                 neighbour.isBlocked = true;
                 neighbour.parent = first;
-                neighbour.g = first.g + 1;
+                neighbour.distance = first.distance + 1;
                 Djikstra.moves.push({
                     type: "update",
                     node: neighbour
                 });
-                if(neighbour.isEnd) {
+                if (neighbour.isEnd) {
                     return {
                         path: Djikstra.getPath(grid, start, end),
                         moves: Djikstra.moves

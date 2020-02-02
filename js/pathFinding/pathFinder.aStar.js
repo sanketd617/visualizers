@@ -1,6 +1,19 @@
 class AStar {
     static moves = [];
 
+    static getNode(x, y) {
+        return {
+            isBlocked: false, //[true, false, false, false, false][Math.floor(Math.random() * 5)],
+            x: x,
+            y: y,
+            g: 100000,
+            h: 100000,
+            parent: null,
+            isStart: false,
+            isEnd: false
+        }
+    }
+
     static search(grid, start, end) {
         let openList = new ListHeap((node) => node.g + node.h);
         let closedList = new ListHeap((node) => node.g + node.h);
@@ -12,7 +25,6 @@ class AStar {
             type: "update",
             node: start
         });
-        // console.log(start.h);
         openList.insert(start);
 
         while (!openList.empty()) {
@@ -36,16 +48,9 @@ class AStar {
                 dx = Math.abs(end.x - newNeighbour.x);
                 dy = Math.abs(end.y - newNeighbour.y);
                 newNeighbour.h = Math.abs(dx - dy) * 10 + Math.min(dx, dy) * 14;
-
-                if(newNeighbour.x === 1 && newNeighbour.y === 1) {
-                    console.log("new", newNeighbour.g, newNeighbour.h, newNeighbour.g + newNeighbour.h);
-                    console.log("min", min.g, min.h, min.g + min.h);
-                }
-
                 newNeighbour.parent = min;
                 grid[newNeighbour.x][newNeighbour.y] = newNeighbour;
                 if (newNeighbour.g + newNeighbour.h < neighbour.g + neighbour.h) {
-                    // console.log(newNeighbour.g + newNeighbour.h, neighbour.g + neighbour.h);
                     let index = openList.index(neighbour, AStar.comparator);
                     if (index !== -1) {
                         openList.remove(index);
@@ -107,7 +112,7 @@ class AStar {
                 continue;
             }
 
-            if(closedList.index(grid[nx][ny], AStar.comparator) !== -1) {
+            if (closedList.index(grid[nx][ny], AStar.comparator) !== -1) {
                 continue;
             }
 
