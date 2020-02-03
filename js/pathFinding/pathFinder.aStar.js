@@ -14,7 +14,7 @@ class AStar {
         }
     }
 
-    static search(grid, start, end) {
+    static search(grid, start, end, diagonalAllowed) {
         let openList = new ListHeap((node) => node.g + node.h);
         let closedList = new ListHeap((node) => node.g + node.h);
         start.g = 0;
@@ -28,12 +28,12 @@ class AStar {
         openList.insert(start);
 
         while (!openList.empty()) {
-            let min = openList.extract();
+            let min = openList.extract((a) => ((a.x - end.x) * (a.x - end.x) + (a.y - end.y) * (a.y - end.y)));
             AStar.moves.push({
                 type: "select",
                 node: min
             });
-            let neighbours = AStar.neighbours(grid, min, closedList);
+            let neighbours = AStar.neighbours(grid, min, closedList, diagonalAllowed);
             for (let neighbour of neighbours) {
                 if (neighbour.isEnd) {
                     neighbour.parent = min;
@@ -57,7 +57,7 @@ class AStar {
                     }
                     index = closedList.index(neighbour, AStar.comparator);
                     if (index !== -1) {
-                        openList.remove(index);
+                        closedList.remove(index);
                     }
                     openList.insert(newNeighbour);
                     AStar.moves.push({
@@ -92,9 +92,15 @@ class AStar {
         return a.x === b.x && a.y === b.y;
     }
 
-    static neighbours(grid, node, closedList) {
+    static neighbours(grid, node, closedList, diagonalAllowed) {
         let x = [0, 1, 0, -1, -1, -1, 1, 1];
         let y = [1, 0, -1, 0, -1, 1, -1, 1];
+
+        if(!diagonalAllowed) {
+            x = x.slice(0, 4);
+            y = y.slice(0, 4);
+        }
+
         let result = [];
         for (let i = 0; i < x.length; i++) {
             let nx = x[i] + node.x;

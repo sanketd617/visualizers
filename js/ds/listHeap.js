@@ -21,12 +21,22 @@ class ListHeap {
         return -1;
     }
 
-    extract() {
+    extract(tieBreaker) {
         if (this.list.length === 0) return null;
         let minIndex = 0;
         for (let i = 1; i < this.list.length; i++) {
             if (this.evaluate(this.list[i]) < this.evaluate(this.list[minIndex])) {
                 minIndex = i;
+            }
+        }
+        let result = Infinity;
+        for(let i = 0; i < this.list.length; i++) {
+            if(this.evaluate(this.list[i]) === this.evaluate(this.list[minIndex])) {
+                let t = tieBreaker(this.list[i]);
+                if(t < result) {
+                    result = t;
+                    minIndex = i;
+                }
             }
         }
         return this.list.splice(minIndex, 1)[0];

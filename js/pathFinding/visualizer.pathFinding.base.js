@@ -5,7 +5,7 @@ class PathFindingVisualizer {
     static isEndDragged = false;
     static draggedCell = null;
 
-    static createViews(grid, cellSize, maxWidth, maxHeight, offset, controllerClass) {
+    static createViews(grid, cellSize, maxWidth, maxHeight, controllerClass) {
         let viewMap = [];
         console.log("creating views");
         for(let i = 0; i < grid.length; i++) {
@@ -18,7 +18,7 @@ class PathFindingVisualizer {
                 }
                 cell.style.width = cellSize + 'px';
                 cell.style.height = cellSize + 'px';
-                cell.style.left = offset + cellSize * i + 'px';
+                cell.style.left = cellSize * i + 'px';
                 cell.style.top = cellSize * j + 'px';
 
                 cell.onmousedown = () => {
