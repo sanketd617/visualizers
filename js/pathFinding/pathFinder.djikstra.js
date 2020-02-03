@@ -13,7 +13,7 @@ class Djikstra {
         }
     }
 
-    static search(grid, start, end) {
+    static search(grid, start, end, diagonalAllowed) {
         start.distance = 0;
         let queue = [start];
 
@@ -24,7 +24,7 @@ class Djikstra {
                 node: first
             });
 
-            for (let neighbour of Djikstra.neighbours(grid, first)) {
+            for (let neighbour of Djikstra.neighbours(grid, first, diagonalAllowed)) {
                 neighbour.isBlocked = true;
                 neighbour.parent = first;
                 neighbour.distance = first.distance + 1;
@@ -62,10 +62,14 @@ class Djikstra {
         return path.reverse();
     }
 
-    static neighbours(grid, node) {
+    static neighbours(grid, node, diagonalAllowed) {
         let x = [0, 1, 0, -1, -1, -1, 1, 1];
         let y = [1, 0, -1, 0, -1, 1, -1, 1];
         let result = [];
+        if (!diagonalAllowed) {
+            x = x.slice(0, 4);
+            y = y.slice(0, 4);
+        }
         for (let i = 0; i < x.length; i++) {
             let nx = x[i] + node.x;
             let ny = y[i] + node.y;

@@ -11,11 +11,11 @@ class PathFindingController {
     static numberOfRows = 15;
     static numberOfColumns;
     static cellSize;
-    static offset;
     static grid = [];
     static start;
     static end;
     static path;
+    static diagonalMovementAllowed = false;
 
     static onSliderChange() {
         PathFindingController.setSpeed();
@@ -41,7 +41,7 @@ class PathFindingController {
         document.getElementById("start-btn").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
 
-        let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type);
+        let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed);
         PathFindingController.path = pathMoves.path;
 
         let moves = pathMoves.moves;
@@ -88,7 +88,6 @@ class PathFindingController {
             PathFindingController.cellSize,
             PathFindingController.maxWidth,
             PathFindingController.maxHeight,
-            PathFindingController.offset,
             PathFindingController);
         PathFindingVisualizer.layoutViews(
             PathFindingController.container,
@@ -124,7 +123,19 @@ class PathFindingController {
             + "<select name='algorithm' id='algorithmSelector' onchange='PathFindingController.onAlgorithmChange()'>"
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
+            + "<button id='diagonal-btn' onclick='PathFindingController.toggleDiagonal()'>DIAGONAL</button>"
             + "</div>";
+    }
+
+    static toggleDiagonal() {
+        PathFindingController.diagonalMovementAllowed = !PathFindingController.diagonalMovementAllowed;
+
+        if(PathFindingController.diagonalMovementAllowed) {
+            document.getElementById("diagonal-btn").classList.add('active');
+        }
+        else {
+            document.getElementById("diagonal-btn").classList.remove('active');
+        }
     }
 
     static init() {
@@ -146,6 +157,7 @@ class PathFindingController {
         }
 
         setTimeout(() => {
+            PathFindingController.toggleDiagonal();
             PathFindingController.type = parseInt(PathFindingController.algorithmSelector.value);
 
             PathFindingController.maxWidth = parseInt(window.getComputedStyle(PathFindingController.container, null).getPropertyValue("width"));
@@ -153,8 +165,15 @@ class PathFindingController {
 
             PathFindingController.cellSize = parseInt(PathFindingController.maxHeight / PathFindingController.numberOfRows);
             PathFindingController.numberOfColumns = parseInt(PathFindingController.maxWidth / PathFindingController.cellSize);
+            let diffX = (PathFindingController.maxWidth - PathFindingController.numberOfColumns * PathFindingController.cellSize);
+            let diffY = (PathFindingController.maxHeight - PathFindingController.numberOfRows * PathFindingController.cellSize);
 
-            PathFindingController.offset = (PathFindingController.maxWidth - PathFindingController.numberOfColumns * PathFindingController.cellSize) / 2;
+            PathFindingController.maxWidth = PathFindingController.maxWidth - diffX + 2;
+            PathFindingController.maxHeight = PathFindingController.maxHeight - diffY + 2;
+            PathFindingController.container.style.width = PathFindingController.maxWidth + 'px';
+            PathFindingController.container.style.height = PathFindingController.maxHeight + 'px';
+            document.getElementById("container").style.width = PathFindingController.maxWidth + 'px';
+            document.getElementById("container").style.height = PathFindingController.maxHeight + 'px';
 
             PathFindingController.createGrid();
 

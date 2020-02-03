@@ -22,7 +22,7 @@ body {
 #container {
     width: 90vw;
     height: 50vh;
-    border: 5px solid #3CAEA3;
+    border: 1px solid gray;
     position: relative;
 }
 
@@ -59,9 +59,13 @@ body {
     transition-duration: 0.3s;
 }
 
-.sub-controls > button:hover, .sub-controls select:hover {
+.sub-controls > button:hover, .sub-controls select:hover, .sub-controls > button.active {
     background: #3CAEA3;
     color: white;
+}
+
+.sub-controls > button:hover, .sub-controls select:hover {
+    opacity: 0.7;
 }
 
 .sub-controls > button:disabled, .sub-controls select:disabled {
