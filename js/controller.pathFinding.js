@@ -16,6 +16,7 @@ class PathFindingController {
     static end;
     static path;
     static diagonalMovementAllowed = false;
+    static isVisualizationOn = false;
 
     static onSliderChange() {
         PathFindingController.setSpeed();
@@ -46,6 +47,7 @@ class PathFindingController {
 
         let moves = pathMoves.moves;
 
+        PathFindingController.isVisualizationOn = true;
         PathFindingVisualizer.visualize(PathFindingController.grid, moves, PathFindingController.viewMap, PathFindingController.type, PathFindingController.slider, PathFindingController.onVisualizationEnd, PathFindingController);
     }
 
@@ -113,6 +115,10 @@ class PathFindingController {
             }, count * PathFindingController.speed);
             count++;
         }
+
+        setTimeout(function () {
+            PathFindingController.isVisualizationOn = false;
+        }, PathFindingController.path.length * PathFindingController.speed);
         PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.remove('grid-visited');
         PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.remove('grid-visited');
     }

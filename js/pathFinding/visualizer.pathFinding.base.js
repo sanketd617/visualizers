@@ -22,6 +22,9 @@ class PathFindingVisualizer {
                 cell.style.top = cellSize * j + 'px';
 
                 cell.onmousedown = () => {
+                    if(controllerClass.isVisualizationOn) {
+                        return;
+                    }
                     PathFindingVisualizer.isDragOn = true;
                     console.log(grid[i][j]);
                     if(grid[i][j].isStart) {
@@ -45,6 +48,9 @@ class PathFindingVisualizer {
                 };
 
                 cell.onmouseup = () => {
+                    if(controllerClass.isVisualizationOn) {
+                        return;
+                    }
                     PathFindingVisualizer.isDragOn = false;
                     PathFindingVisualizer.toBeBlocked = false;
                     PathFindingVisualizer.isStartDragged = false;
