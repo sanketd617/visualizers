@@ -129,19 +129,16 @@ class PathFindingController {
             + "<select name='algorithm' id='algorithmSelector' onchange='PathFindingController.onAlgorithmChange()'>"
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
-            + "<button id='diagonal-btn' onclick='PathFindingController.toggleDiagonal()'>DIAGONAL</button>"
             + "</div>";
+
+        document.querySelector("#container > .extra-controls").innerHTML = "Diagonal Movement &nbsp; <label class='switch'>"
+            + "  <input type='checkbox' id='diagonal-switch' checked onchange='PathFindingController.toggleDiagonal()'>"
+            + "  <span class='slider round'></span>"
+            + "</label>";
     }
 
     static toggleDiagonal() {
         PathFindingController.diagonalMovementAllowed = !PathFindingController.diagonalMovementAllowed;
-
-        if(PathFindingController.diagonalMovementAllowed) {
-            document.getElementById("diagonal-btn").classList.add('active');
-        }
-        else {
-            document.getElementById("diagonal-btn").classList.remove('active');
-        }
     }
 
     static init() {
