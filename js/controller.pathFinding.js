@@ -14,7 +14,7 @@ class PathFindingController {
     static grid = [];
     static start;
     static end;
-    static path;
+    static path = [];
     static diagonalMovementAllowed = false;
     static isVisualizationOn = false;
 
@@ -23,30 +23,32 @@ class PathFindingController {
     }
 
     static onAlgorithmChange() {
+        PathFindingController.viewMap.forEach((row) => {
+            row.forEach((cell) => {
+                cell.classList.remove('grid-path');
+                cell.classList.remove('grid-visited');
+                cell.classList.remove('grid-selected');
+            });
+        });
         PathFindingController.type = parseInt(PathFindingController.algorithmSelector.value);
-        PathFindingController.removeViews();
-        PathFindingController.start = null;
-        PathFindingController.end = null;
-        PathFindingController.createGrid(true);
-    }
-
-    static removeViews() {
-        for (let row of PathFindingController.grid) {
-            for (let cell of row) {
-                PathFindingController.container.removeChild(PathFindingController.viewMap[cell.x][cell.y]);
-            }
-        }
+        PathFindingController.createGrid(false);
     }
 
     static startVisualization() {
+        PathFindingController.viewMap.forEach((row) => {
+            row.forEach((cell) => {
+                cell.classList.remove('grid-path');
+                cell.classList.remove('grid-visited');
+                cell.classList.remove('grid-selected');
+            });
+        });
+        PathFindingController.createGrid(false);
         document.getElementById("start-btn").disabled = true;
         document.getElementById("diagonal-switch").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
         document.getElementById("algorithmTypeSelector").disabled = true;
-
         let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed);
         PathFindingController.path = pathMoves.path;
-
         let moves = pathMoves.moves;
 
         PathFindingController.isVisualizationOn = true;
@@ -73,36 +75,41 @@ class PathFindingController {
         cell.isEnd = true;
     }
 
-    static createGrid() {
+    static createGrid(toBeCreated) {
         PathFindingController.grid = [];
         for (let i = 0; i < PathFindingController.numberOfColumns; i++) {
             PathFindingController.grid.push([]);
 
             for (let j = 0; j < PathFindingController.numberOfRows; j++) {
                 let cell = PathFinder.getNode(i, j, PathFindingController.type);
+                if(!toBeCreated) {
+                    cell.isBlocked = PathFindingController.viewMap[i][j].classList.contains('grid-obstacle');
+                }
                 PathFindingController.grid[i].push(cell);
             }
         }
 
-        PathFindingController.setStart(PathFindingController.grid[0][0]);
-        PathFindingController.setEnd(PathFindingController.grid[PathFindingController.grid.length - 1][PathFindingController.grid[0].length - 1]);
+        if (toBeCreated) {
+            PathFindingController.setStart(PathFindingController.grid[0][0]);
+            PathFindingController.setEnd(PathFindingController.grid[PathFindingController.grid.length - 1][PathFindingController.grid[0].length - 1]);
 
-        PathFindingController.viewMap = PathFindingVisualizer.createViews(
-            PathFindingController.grid,
-            PathFindingController.cellSize,
-            PathFindingController.maxWidth,
-            PathFindingController.maxHeight,
-            PathFindingController);
-        PathFindingVisualizer.layoutViews(
-            PathFindingController.container,
-            PathFindingController.viewMap,
-            PathFindingController.grid.length,
-            PathFindingController.grid[0].length,
-            PathFindingController);
+            PathFindingController.viewMap = PathFindingVisualizer.createViews(
+                PathFindingController.grid,
+                PathFindingController.cellSize,
+                PathFindingController.maxWidth,
+                PathFindingController.maxHeight,
+                PathFindingController);
+            PathFindingVisualizer.layoutViews(
+                PathFindingController.container,
+                PathFindingController.viewMap,
+                PathFindingController.grid.length,
+                PathFindingController.grid[0].length,
+                PathFindingController);
 
-        PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
-        PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
-        PathFindingController.setSpeed();
+            PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
+            PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
+            PathFindingController.setSpeed();
+        }
     }
 
     static onVisualizationEnd() {
@@ -182,7 +189,7 @@ class PathFindingController {
             document.getElementById("container").style.width = PathFindingController.maxWidth + 'px';
             document.getElementById("container").style.height = PathFindingController.maxHeight + 'px';
 
-            PathFindingController.createGrid();
+            PathFindingController.createGrid(true);
 
         }, 100);
     }

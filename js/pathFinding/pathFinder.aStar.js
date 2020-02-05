@@ -15,6 +15,7 @@ class AStar {
     }
 
     static search(grid, start, end, diagonalAllowed) {
+        AStar.moves = [];
         let openList = new ListHeap((node) => node.g + node.h);
         let closedList = new ListHeap((node) => node.g + node.h);
         start.g = 0;
@@ -35,7 +36,7 @@ class AStar {
             });
             let neighbours = AStar.neighbours(grid, min, closedList, diagonalAllowed);
             for (let neighbour of neighbours) {
-                if (neighbour.isEnd) {
+                if (AStar.comparator(neighbour, end)) {
                     neighbour.parent = min;
                     return {
                         path: AStar.getPath(grid, start, end),

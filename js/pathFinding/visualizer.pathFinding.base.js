@@ -7,7 +7,6 @@ class PathFindingVisualizer {
 
     static createViews(grid, cellSize, maxWidth, maxHeight, controllerClass) {
         let viewMap = [];
-        console.log("creating views");
         for(let i = 0; i < grid.length; i++) {
             viewMap.push([]);
             for(let j = 0; j < grid[0].length; j++) {

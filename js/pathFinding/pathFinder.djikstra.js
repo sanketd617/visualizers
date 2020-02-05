@@ -14,6 +14,7 @@ class Djikstra {
     }
 
     static search(grid, start, end, diagonalAllowed) {
+        Djikstra.moves = [];
         start.distance = 0;
         let queue = [start];
 
@@ -32,7 +33,7 @@ class Djikstra {
                     type: "update",
                     node: neighbour
                 });
-                if (neighbour.isEnd) {
+                if (Djikstra.comparator(neighbour, end)) {
                     return {
                         path: Djikstra.getPath(grid, start, end),
                         moves: Djikstra.moves
@@ -60,6 +61,10 @@ class Djikstra {
         }
         path.splice(0, 1);
         return path.reverse();
+    }
+
+    static comparator(a, b) {
+        return a.x === b.x && a.y === b.y;
     }
 
     static neighbours(grid, node, diagonalAllowed) {
