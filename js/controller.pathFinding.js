@@ -14,38 +14,44 @@ class PathFindingController {
     static grid = [];
     static start;
     static end;
-    static path;
+    static path = [];
     static diagonalMovementAllowed = false;
+    static isVisualizationOn = false;
 
     static onSliderChange() {
         PathFindingController.setSpeed();
     }
 
     static onAlgorithmChange() {
+        PathFindingController.viewMap.forEach((row) => {
+            row.forEach((cell) => {
+                cell.classList.remove('grid-path');
+                cell.classList.remove('grid-visited');
+                cell.classList.remove('grid-selected');
+            });
+        });
         PathFindingController.type = parseInt(PathFindingController.algorithmSelector.value);
-        PathFindingController.removeViews();
-        PathFindingController.start = null;
-        PathFindingController.end = null;
-        PathFindingController.createGrid(true);
-    }
-
-    static removeViews() {
-        for (let row of PathFindingController.grid) {
-            for (let cell of row) {
-                PathFindingController.container.removeChild(PathFindingController.viewMap[cell.x][cell.y]);
-            }
-        }
+        PathFindingController.createGrid(false);
     }
 
     static startVisualization() {
+        PathFindingController.viewMap.forEach((row) => {
+            row.forEach((cell) => {
+                cell.classList.remove('grid-path');
+                cell.classList.remove('grid-visited');
+                cell.classList.remove('grid-selected');
+            });
+        });
+        PathFindingController.createGrid(false);
         document.getElementById("start-btn").disabled = true;
+        document.getElementById("diagonal-switch").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
-
+        document.getElementById("algorithmTypeSelector").disabled = true;
         let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed);
         PathFindingController.path = pathMoves.path;
-
         let moves = pathMoves.moves;
 
+        PathFindingController.isVisualizationOn = true;
         PathFindingVisualizer.visualize(PathFindingController.grid, moves, PathFindingController.viewMap, PathFindingController.type, PathFindingController.slider, PathFindingController.onVisualizationEnd, PathFindingController);
     }
 
@@ -69,41 +75,48 @@ class PathFindingController {
         cell.isEnd = true;
     }
 
-    static createGrid() {
+    static createGrid(toBeCreated) {
         PathFindingController.grid = [];
         for (let i = 0; i < PathFindingController.numberOfColumns; i++) {
             PathFindingController.grid.push([]);
 
             for (let j = 0; j < PathFindingController.numberOfRows; j++) {
                 let cell = PathFinder.getNode(i, j, PathFindingController.type);
+                if(!toBeCreated) {
+                    cell.isBlocked = PathFindingController.viewMap[i][j].classList.contains('grid-obstacle');
+                }
                 PathFindingController.grid[i].push(cell);
             }
         }
 
-        PathFindingController.setStart(PathFindingController.grid[0][0]);
-        PathFindingController.setEnd(PathFindingController.grid[PathFindingController.grid.length - 1][PathFindingController.grid[0].length - 1]);
+        if (toBeCreated) {
+            PathFindingController.setStart(PathFindingController.grid[0][0]);
+            PathFindingController.setEnd(PathFindingController.grid[PathFindingController.grid.length - 1][PathFindingController.grid[0].length - 1]);
 
-        PathFindingController.viewMap = PathFindingVisualizer.createViews(
-            PathFindingController.grid,
-            PathFindingController.cellSize,
-            PathFindingController.maxWidth,
-            PathFindingController.maxHeight,
-            PathFindingController);
-        PathFindingVisualizer.layoutViews(
-            PathFindingController.container,
-            PathFindingController.viewMap,
-            PathFindingController.grid.length,
-            PathFindingController.grid[0].length,
-            PathFindingController);
+            PathFindingController.viewMap = PathFindingVisualizer.createViews(
+                PathFindingController.grid,
+                PathFindingController.cellSize,
+                PathFindingController.maxWidth,
+                PathFindingController.maxHeight,
+                PathFindingController);
+            PathFindingVisualizer.layoutViews(
+                PathFindingController.container,
+                PathFindingController.viewMap,
+                PathFindingController.grid.length,
+                PathFindingController.grid[0].length,
+                PathFindingController);
 
-        PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
-        PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
-        PathFindingController.setSpeed();
+            PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.add('grid-end-point');
+            PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.add('grid-end-point');
+            PathFindingController.setSpeed();
+        }
     }
 
     static onVisualizationEnd() {
         document.getElementById("start-btn").disabled = false;
+        document.getElementById("diagonal-switch").disabled = false;
         PathFindingController.algorithmSelector.disabled = false;
+        document.getElementById("algorithmTypeSelector").disabled = false;
         let count = 0;
         for (let node of PathFindingController.path) {
             setTimeout(function () {
@@ -113,6 +126,10 @@ class PathFindingController {
             }, count * PathFindingController.speed);
             count++;
         }
+
+        setTimeout(function () {
+            PathFindingController.isVisualizationOn = false;
+        }, PathFindingController.path.length * PathFindingController.speed);
         PathFindingController.viewMap[PathFindingController.start.x][PathFindingController.start.y].classList.remove('grid-visited');
         PathFindingController.viewMap[PathFindingController.end.x][PathFindingController.end.y].classList.remove('grid-visited');
     }
@@ -123,19 +140,16 @@ class PathFindingController {
             + "<select name='algorithm' id='algorithmSelector' onchange='PathFindingController.onAlgorithmChange()'>"
             + "</select>"
             + "<button id='start-btn' onclick='PathFindingController.startVisualization()'>START</button>"
-            + "<button id='diagonal-btn' onclick='PathFindingController.toggleDiagonal()'>DIAGONAL</button>"
             + "</div>";
+
+        document.querySelector("#container > .extra-controls").innerHTML = "Diagonal Movement &nbsp; <label class='switch'>"
+            + "  <input type='checkbox' id='diagonal-switch' checked onchange='PathFindingController.toggleDiagonal()'>"
+            + "  <span class='slider round'></span>"
+            + "</label>";
     }
 
     static toggleDiagonal() {
         PathFindingController.diagonalMovementAllowed = !PathFindingController.diagonalMovementAllowed;
-
-        if(PathFindingController.diagonalMovementAllowed) {
-            document.getElementById("diagonal-btn").classList.add('active');
-        }
-        else {
-            document.getElementById("diagonal-btn").classList.remove('active');
-        }
     }
 
     static init() {
@@ -175,7 +189,7 @@ class PathFindingController {
             document.getElementById("container").style.width = PathFindingController.maxWidth + 'px';
             document.getElementById("container").style.height = PathFindingController.maxHeight + 'px';
 
-            PathFindingController.createGrid();
+            PathFindingController.createGrid(true);
 
         }, 100);
     }

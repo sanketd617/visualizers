@@ -7,7 +7,6 @@ class PathFindingVisualizer {
 
     static createViews(grid, cellSize, maxWidth, maxHeight, controllerClass) {
         let viewMap = [];
-        console.log("creating views");
         for(let i = 0; i < grid.length; i++) {
             viewMap.push([]);
             for(let j = 0; j < grid[0].length; j++) {
@@ -22,6 +21,9 @@ class PathFindingVisualizer {
                 cell.style.top = cellSize * j + 'px';
 
                 cell.onmousedown = () => {
+                    if(controllerClass.isVisualizationOn) {
+                        return;
+                    }
                     PathFindingVisualizer.isDragOn = true;
                     console.log(grid[i][j]);
                     if(grid[i][j].isStart) {
@@ -45,6 +47,9 @@ class PathFindingVisualizer {
                 };
 
                 cell.onmouseup = () => {
+                    if(controllerClass.isVisualizationOn) {
+                        return;
+                    }
                     PathFindingVisualizer.isDragOn = false;
                     PathFindingVisualizer.toBeBlocked = false;
                     PathFindingVisualizer.isStartDragged = false;
