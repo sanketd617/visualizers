@@ -40,6 +40,7 @@ class PathFindingController {
 
     static startVisualization() {
         document.getElementById("start-btn").disabled = true;
+        document.getElementById("diagonal-switch").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
 
         let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed);
@@ -105,6 +106,7 @@ class PathFindingController {
 
     static onVisualizationEnd() {
         document.getElementById("start-btn").disabled = false;
+        document.getElementById("diagonal-switch").disabled = false;
         PathFindingController.algorithmSelector.disabled = false;
         let count = 0;
         for (let node of PathFindingController.path) {
