@@ -17,9 +17,10 @@ class SortingController {
         document.getElementById("start-btn").disabled = true;
         document.getElementById("shuffle-btn").disabled = true;
         document.getElementById("random-btn").disabled = true;
+        document.getElementById("algorithmTypeSelector").disabled = true;
         SortingController.algorithmSelector.disabled = true;
 
-        for(let i = 0; i < SortingController.numberOfItems; i++) {
+        for (let i = 0; i < SortingController.numberOfItems; i++) {
             SortingController.viewMap[i].classList.remove('sorted');
         }
 
@@ -35,24 +36,24 @@ class SortingController {
 
     static randomize(toBeCreated) {
         SortingController.array = [];
-        for(let i = 0; i < SortingController.numberOfItems; i++) {
+        for (let i = 0; i < SortingController.numberOfItems; i++) {
             SortingController.array.push(Math.floor(Math.random() * (SortingController.rangeEnd - SortingController.rangeStart)) + SortingController.rangeStart);
         }
 
-        if(toBeCreated) {
+        if (toBeCreated) {
             SortingController.viewMap = SortingVisualizer.createViews(SortingController.array, SortingController.maxWidth, SortingController.maxHeight);
             SortingVisualizer.layoutViews(SortingController.container, SortingController.viewMap, SortingController.array.length);
         } else {
             SortingVisualizer.resizeViewsTo(SortingController.viewMap, SortingController.array, SortingController.maxHeight);
         }
-        for(let i = 0; i < SortingController.numberOfItems; i++) {
+        for (let i = 0; i < SortingController.numberOfItems; i++) {
             SortingController.viewMap[i].classList.remove('sorted');
         }
         SortingController.setSpeed();
     }
 
     static shuffle() {
-        for(let i = 0; i < SortingController.numberOfItems; i++) {
+        for (let i = 0; i < SortingController.numberOfItems; i++) {
             SortingController.viewMap[i].classList.remove('sorted');
         }
         for (let i = 0; i < SortingController.array.length; i++) {
@@ -87,9 +88,10 @@ class SortingController {
         document.getElementById("start-btn").disabled = false;
         document.getElementById("shuffle-btn").disabled = false;
         document.getElementById("random-btn").disabled = false;
+        document.getElementById("algorithmTypeSelector").disabled = false;
         SortingController.algorithmSelector.disabled = false;
 
-        for(let i = 0; i < SortingController.array.length; i++) {
+        for (let i = 0; i < SortingController.array.length; i++) {
             setTimeout(() => {
                 SortingController.viewMap[i].classList.add('sorted');
             }, (i + 1) * 100);
@@ -103,16 +105,15 @@ class SortingController {
     }
 
     static createControls() {
-        let controls = "<div class='sub-controls'>"
-                                   + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='SortingController.onSliderChange()'>"
-                                   + "<select name='algorithm' id='algorithmSelector'>"
-                                   + "</select>"
-                                   + "<button id='start-btn' onclick='SortingController.startVisualization()'>START</button>"
-                                   + "<button id='shuffle-btn' onclick='SortingController.shuffle()'>SHUFFLE</button>"
-                                   + "<button id='random-btn' onclick='SortingController.randomize()'>RANDOM ARRAY</button>"
-                               + "</div>";
-        document.querySelector("#container > .controls > .sub").innerHTML = controls;
-
+        document.querySelector("#container > .controls > .sub").innerHTML = "<div class='sub-controls'>"
+            + "Speed &nbsp; <input id='slider' type='range' min='0.1' max='2' value='2' step='0.001' onchange='SortingController.onSliderChange()'>"
+            + "<select name='algorithm' id='algorithmSelector'>"
+            + "</select>"
+            + "<button id='start-btn' onclick='SortingController.startVisualization()'>START</button>"
+            + "<button id='shuffle-btn' onclick='SortingController.shuffle()'>SHUFFLE</button>"
+            + "<button id='random-btn' onclick='SortingController.randomize()'>RANDOM ARRAY</button>"
+            + "</div>";
+        document.querySelector("#container > .extra-controls").innerHTML = "";
     }
 
     static init() {

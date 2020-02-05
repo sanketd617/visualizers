@@ -42,6 +42,7 @@ class PathFindingController {
         document.getElementById("start-btn").disabled = true;
         document.getElementById("diagonal-switch").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
+        document.getElementById("algorithmTypeSelector").disabled = true;
 
         let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed);
         PathFindingController.path = pathMoves.path;
@@ -108,6 +109,7 @@ class PathFindingController {
         document.getElementById("start-btn").disabled = false;
         document.getElementById("diagonal-switch").disabled = false;
         PathFindingController.algorithmSelector.disabled = false;
+        document.getElementById("algorithmTypeSelector").disabled = false;
         let count = 0;
         for (let node of PathFindingController.path) {
             setTimeout(function () {
