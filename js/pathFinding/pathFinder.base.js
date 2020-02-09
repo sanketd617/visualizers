@@ -15,14 +15,14 @@ class PathFinder {
 
     static maxElements = 20;
 
-    static findPath(grid, start, end, type, diagonalAllowed) {
+    static findPath(grid, start, end, type, diagonalAllowed, isFastForward) {
 
         let gridCopy = grid.slice();
         switch (type) {
             case 0:
-                return Djikstra.search(gridCopy, start, end, diagonalAllowed);
+                return Djikstra.search(gridCopy, start, end, diagonalAllowed, isFastForward);
             case 1:
-                return AStar.search(gridCopy, start, end, diagonalAllowed);
+                return AStar.search(gridCopy, start, end, diagonalAllowed, isFastForward);
         }
     }
 
