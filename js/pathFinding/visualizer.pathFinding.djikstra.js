@@ -32,6 +32,11 @@ class DjikstraVisualizer {
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
                     // viewMap[move.node.x][move.node.y].innerHTML  = "<i class='fas fa-chevron-right'></i>";
                     break;
+                case "updateBatch":
+                    for(let node of move.nodes) {
+                        viewMap[node.x][node.y].classList.add("grid-visited");
+                    }
+                    break;
             }
             DjikstraVisualizer.index++;
             setTimeout(animateInternally, DjikstraVisualizer.speed);

@@ -13,27 +13,59 @@ class Djikstra {
         }
     }
 
-    static search(grid, start, end, diagonalAllowed) {
+    static search(grid, start, end, diagonalAllowed, isFastForward) {
         Djikstra.moves = [];
         start.distance = 0;
         let queue = [start];
 
         while (queue.length > 0) {
             let first = queue.shift();
-            Djikstra.moves.push({
-                type: "select",
-                node: first
-            });
+            if(!isFastForward) {
+                Djikstra.moves.push({
+                    type: "select",
+                    node: first
+                });
+            }
 
             for (let neighbour of Djikstra.neighbours(grid, first, diagonalAllowed)) {
                 neighbour.isBlocked = true;
                 neighbour.parent = first;
                 neighbour.distance = first.distance + 1;
-                Djikstra.moves.push({
-                    type: "update",
-                    node: neighbour
-                });
+                if (!isFastForward) {
+                    Djikstra.moves.push({
+                        type: "update",
+                        node: neighbour
+                    });
+                }
                 if (Djikstra.comparator(neighbour, end)) {
+                    if (isFastForward) {
+                        Djikstra.moves = [];
+                        let nodes = [];
+                        for(let row of grid) {
+                            for(let cell of row) {
+                                nodes.push(cell);
+                            }
+                        }
+
+                        nodes.sort((a, b) => (a.distance - b.distance));
+                        let group = [];
+
+                        for(let node of nodes) {
+                            if(group.length === 0) {
+                                group.push(node);
+                                continue;
+                            }
+                            if(group[0].distance === node.distance) {
+                                group.push(node);
+                                continue;
+                            }
+                            Djikstra.moves.push({
+                                type: "updateBatch",
+                                nodes: group
+                            });
+                            group = [node];
+                        }
+                    }
                     return {
                         path: Djikstra.getPath(grid, start, end),
                         moves: Djikstra.moves
@@ -43,6 +75,9 @@ class Djikstra {
             }
         }
 
+        if (isFastForward) {
+
+        }
         return {
             path: [],
             moves: Djikstra.moves

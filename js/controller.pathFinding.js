@@ -17,6 +17,7 @@ class PathFindingController {
     static path = [];
     static diagonalMovementAllowed = false;
     static isVisualizationOn = false;
+    static fastForwardMode = true;
 
     static onSliderChange() {
         PathFindingController.setSpeed();
@@ -47,7 +48,7 @@ class PathFindingController {
         document.getElementById("diagonal-switch").disabled = true;
         PathFindingController.algorithmSelector.disabled = true;
         document.getElementById("algorithmTypeSelector").disabled = true;
-        let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed);
+        let pathMoves = PathFinder.findPath(PathFindingController.grid, PathFindingController.start, PathFindingController.end, PathFindingController.type, PathFindingController.diagonalMovementAllowed, PathFindingController.fastForwardMode);
         PathFindingController.path = pathMoves.path;
         let moves = pathMoves.moves;
 
@@ -145,7 +146,15 @@ class PathFindingController {
         document.querySelector("#container > .extra-controls").innerHTML = "Diagonal Movement &nbsp; <label class='switch'>"
             + "  <input type='checkbox' id='diagonal-switch' checked onchange='PathFindingController.toggleDiagonal()'>"
             + "  <span class='slider round'></span>"
+            + "</label>"
+            + "&nbsp; &nbsp; &nbsp; &nbsp; Fast forward &nbsp; <label class='switch'>"
+            + "  <input type='checkbox' id='fast-forward-switch' checked onchange='PathFindingController.toggleFastForward()'>"
+            + "  <span class='slider round'></span>"
             + "</label>";
+    }
+
+    static toggleFastForward() {
+        PathFindingController.fastForwardMode = !PathFindingController.fastForwardMode;
     }
 
     static toggleDiagonal() {

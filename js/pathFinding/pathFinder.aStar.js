@@ -14,7 +14,7 @@ class AStar {
         }
     }
 
-    static search(grid, start, end, diagonalAllowed) {
+    static search(grid, start, end, diagonalAllowed, isFastForward) {
         AStar.moves = [];
         let openList = new ListHeap((node) => node.g + node.h);
         let closedList = new ListHeap((node) => node.g + node.h);
