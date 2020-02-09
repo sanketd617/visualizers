@@ -15,7 +15,6 @@ class AStarVisualizer {
 
         function animateInternally() {
             if(AStarVisualizer.index >= AStarVisualizer.moves.length) {
-                selected.classList.remove("grid-selected");
                 AStarVisualizer.onEnd();
                 return;
             }
@@ -33,6 +32,11 @@ class AStarVisualizer {
                 case "update":
                     viewMap[move.node.x][move.node.y].classList.add("grid-visited");
                     // viewMap[move.node.x][move.node.y].innerHTML  = move.node.g + move.node.h;
+                    break;
+                case "updateBatch":
+                    for(let node of move.nodes) {
+                        viewMap[node.x][node.y].classList.add("grid-visited");
+                    }
                     break;
             }
             AStarVisualizer.index++;

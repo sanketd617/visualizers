@@ -30,13 +30,18 @@ class AStar {
 
         while (!openList.empty()) {
             let min = openList.extract((a) => ((a.x - end.x) * (a.x - end.x) + (a.y - end.y) * (a.y - end.y)));
-            AStar.moves.push({
-                type: "select",
-                node: min
-            });
+            if(!isFastForward) {
+                AStar.moves.push({
+                    type: "select",
+                    node: min
+                });
+            }
             let neighbours = AStar.neighbours(grid, min, closedList, diagonalAllowed);
             for (let neighbour of neighbours) {
                 if (AStar.comparator(neighbour, end)) {
+                    if(isFastForward) {
+                        AStar.moves = AStar.getFastForwardMoves(grid);
+                    }
                     neighbour.parent = min;
                     return {
                         path: AStar.getPath(grid, start, end),
@@ -61,18 +66,53 @@ class AStar {
                         closedList.remove(index);
                     }
                     openList.insert(newNeighbour);
-                    AStar.moves.push({
-                        type: "update",
-                        node: newNeighbour
-                    });
+                    if(!isFastForward) {
+                        AStar.moves.push({
+                            type: "update",
+                            node: newNeighbour
+                        });
+                    }
                 }
             }
             closedList.insert(min);
+        }
+        if(isFastForward) {
+            AStar.moves = AStar.getFastForwardMoves(grid);
         }
         return {
             path: [],
             moves: AStar.moves
         };
+    }
+
+    static getFastForwardMoves(grid) {
+        let moves = [];
+        let nodes = [];
+        for(let row of grid) {
+            for(let cell of row) {
+                nodes.push(cell);
+            }
+        }
+
+        nodes.sort((a, b) => (a.g - b.g));
+        let group = [];
+
+        for(let node of nodes) {
+            if(group.length === 0) {
+                group.push(node);
+                continue;
+            }
+            if(group[0].g === node.g) {
+                group.push(node);
+                continue;
+            }
+            moves.push({
+                type: "updateBatch",
+                nodes: group
+            });
+            group = [node];
+        }
+        return moves;
     }
 
     static getPath(grid, start, end) {

@@ -39,32 +39,7 @@ class Djikstra {
                 }
                 if (Djikstra.comparator(neighbour, end)) {
                     if (isFastForward) {
-                        Djikstra.moves = [];
-                        let nodes = [];
-                        for(let row of grid) {
-                            for(let cell of row) {
-                                nodes.push(cell);
-                            }
-                        }
-
-                        nodes.sort((a, b) => (a.distance - b.distance));
-                        let group = [];
-
-                        for(let node of nodes) {
-                            if(group.length === 0) {
-                                group.push(node);
-                                continue;
-                            }
-                            if(group[0].distance === node.distance) {
-                                group.push(node);
-                                continue;
-                            }
-                            Djikstra.moves.push({
-                                type: "updateBatch",
-                                nodes: group
-                            });
-                            group = [node];
-                        }
+                        Djikstra.moves = Djikstra.getFastForwardMoves(grid);
                     }
                     return {
                         path: Djikstra.getPath(grid, start, end),
@@ -76,12 +51,42 @@ class Djikstra {
         }
 
         if (isFastForward) {
-
+            Djikstra.moves = Djikstra.getFastForwardMoves(grid);
         }
         return {
             path: [],
             moves: Djikstra.moves
         };
+    }
+
+    static getFastForwardMoves(grid) {
+        let moves = [];
+        let nodes = [];
+        for(let row of grid) {
+            for(let cell of row) {
+                nodes.push(cell);
+            }
+        }
+
+        nodes.sort((a, b) => (a.distance - b.distance));
+        let group = [];
+
+        for(let node of nodes) {
+            if(group.length === 0) {
+                group.push(node);
+                continue;
+            }
+            if(group[0].distance === node.distance) {
+                group.push(node);
+                continue;
+            }
+            moves.push({
+                type: "updateBatch",
+                nodes: group
+            });
+            group = [node];
+        }
+        return moves;
     }
 
     static getPath(grid, start, end) {
